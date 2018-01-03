@@ -64,6 +64,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Coordinates.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
@@ -73,6 +74,7 @@
   <ItemGroup>
     <ClInclude Include="audiere.h" />
     <ClInclude Include="Coordinates.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Model.h" />

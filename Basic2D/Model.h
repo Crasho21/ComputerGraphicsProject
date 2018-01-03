@@ -18,6 +18,7 @@
 #include <time.h>
 #include <math.h>
 
+#include "Enemy.h"
 #include "Hero.h"
 #include "StartScreen.h"
 #include "Vertex.h"
@@ -67,6 +68,7 @@ private:
 	std::vector<Vertex> rbat;
 	std::vector<Vertex> temp;
 	Hero hero;
+	Enemy enemy;
 
 	clock_t Tstamp, Tstart;
 	double Full_elapsed;  // elapsed time in seconds from the beginning of the program
@@ -76,24 +78,12 @@ private:
 	GLuint	base;				// Base Display List For The Font Set
 public:
 	//  methods
-	MyModel(): hDC(NULL), hRC (NULL), hWnd (NULL), active (true), fullscreen(true), frames(0), fps(0) {
+	MyModel() : hDC(NULL), hRC(NULL), hWnd(NULL), active(true), fullscreen(true), frames(0), fps(0) {
 		Background.clear();
-		Background.push_back(Vertex(-1,-1,-5,0,0));
-		Background.push_back(Vertex( 1,-1,-5,0.5,0));
-		Background.push_back(Vertex( 1, 1,-5,0.5,1));
-		Background.push_back(Vertex(-1, 1,-5,0,1));
-		// Hero textures
-		/*hero.clear();
-		hero.push_back(Vertex(-1, -1, -5, 0, 0));
-		hero.push_back(Vertex(1, -1, -5, 1, 0));
-		hero.push_back(Vertex(1, 1, -5, 1, 1));
-		hero.push_back(Vertex(-1, 1, -5, 0, 1));
-		// Revesed texture (flipping 0 to 1 and 1 to 0)
-		rhero.clear();
-		rhero.push_back(Vertex(-1, -1, -5, 1, 0));
-		rhero.push_back(Vertex(1, -1, -5, 0, 0));
-		rhero.push_back(Vertex(1, 1, -5, 0, 1));
-		rhero.push_back(Vertex(-1, 1, -5, 1, 1));*/
+		Background.push_back(Vertex(-1, -1, -5, 0, 0));
+		Background.push_back(Vertex(1, -1, -5, 0.5, 0));
+		Background.push_back(Vertex(1, 1, -5, 0.5, 1));
+		Background.push_back(Vertex(-1, 1, -5, 0, 1));
 		// Bat textures
 		bat.clear();
 		bat.push_back(Vertex(-1, -1, -5, 0, 0));
@@ -124,8 +114,8 @@ private:
 	void BuildFont(void);
 	void KillFont(void);
 	//  Conversion from pixel distance to float X and Y distance
-	inline float PixToCoord_X(int pix) { return ( 2.0f * (float) pix * (float) plx ) / (float) Wwidth; }
-	inline float PixToCoord_Y(int pix) { return ( 2.0f * (float) pix * (float) ply ) / (float) Wheight; }
+	inline float PixToCoord_X(int pix) { return (2.0f * (float)pix * (float)plx) / (float)Wwidth; }
+	inline float PixToCoord_Y(int pix) { return (2.0f * (float)pix * (float)ply) / (float)Wheight; }
 };
 
 extern class MyModel Data;
