@@ -109,7 +109,7 @@ void Hero::userMove(int leftKey, int rightKey, double limitWindow, float earthY)
 	if (vector[0].y > earthY) {	//Se sto volando
 		for (int i = 0; i < 4; i++) {
 			vector[i].y -= incry;
-			reverseVector[1].y -= incry;
+			reverseVector[i].y -= incry;
 		}
 		center.y -= incry;
 

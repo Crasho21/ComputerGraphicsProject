@@ -144,7 +144,7 @@ bool MyModel::DrawGLScene(void)
 		hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], plx, -0.4);
 		hero.drawGL(Full_elapsed);
 
-		enemy.moveX(Full_elapsed);
+		//enemy.moveX(Full_elapsed);
 		enemy.drawGL(Full_elapsed);
 
 		break;

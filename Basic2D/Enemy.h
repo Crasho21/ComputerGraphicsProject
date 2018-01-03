@@ -17,6 +17,7 @@ class Enemy {
 private:
 	std::vector<Vertex> vector;
 	std::vector<Vertex> reverseVector;
+	std::vector<Vertex> temp;
 
 	GLuint texture[30];
 
@@ -28,8 +29,12 @@ private:
 	int health = 100;		// Indicatore di punti vita
 
 	int id;
-	double minx = -0.05;
-	double maxx = 0.05;
+	// Cambiare il raggio per aumentare lo spazio coperto dal mostro e la omega per variarne la velocità
+	double radious = 0.2;
+	double omega = PI / 4.0;  // PI/4 each second
+	double px, py;
+	double minx;
+	double maxx;
 
 public:
 
@@ -51,6 +56,8 @@ public:
 		reverseVector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso sx
 		reverseVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto sx
 		reverseVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto dx
+		temp.clear();
+		temp = reverseVector;
 
 		this->loadGLTexture();
 	}
@@ -59,6 +66,7 @@ public:
 
 	bool loadGLTexture();
 
+	void moveX(float incrx);
 	void moveX(double Full_elapsed);
 	void setXPosition(float xPos);
 
