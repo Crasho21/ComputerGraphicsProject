@@ -169,7 +169,7 @@ boolean Hero::userFireCommand(int keyFire) {
 
 void Hero::shotFireball(int power, int angle) {
 	// Sparo della fireball a partire dalla posizione attuale dell'eroe
-	fireball = new Fireball(power, angle, Vertex(center.x, center.y + (height / 2), z));
+	fireball = new Fireball(power, angle, Coordinates(center.x, center.y + (height / 2)), z);
 }
 
 void Hero::calcolaDanno(Vertex center, float radius) { // TODO

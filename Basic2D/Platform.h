@@ -7,38 +7,23 @@
 #include "Coordinates.h"
 #include "Vertex.h"
 
-class Fireball {
+class Platform {
 private:
 	float width = 0.05;
 	float height = 0.025;
+	float z;
+	int id;
 	Coordinates center;
 	std::vector<Vertex> vector;
 
-	GLuint texture[3];
-
-	float startPower;
-	float startAngle;
-
-	float incrX;
-	float incrY;
-
-	float z = -5.0;
-
-	int id;
-	bool isVisible = false;
-
-	std::vector<Vertex> direction;
-
+	GLuint texture[30];
 public:
-	Fireball() {};
-	Fireball(Coordinates center, float z, int id) {
+	Platform() {}
+	Platform(Coordinates center, float z, int id) {
 		this->center = center;
 		this->z = z;
-		this->id = id; 
-		isVisible = false;
-
+		this->id = id;
 		vector.clear();
-
 		vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
 		vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
 		vector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto sx
@@ -46,13 +31,7 @@ public:
 
 		this->loadGLTexture();
 	}
-	Fireball(int power, int angle, Coordinates startPoint, int z);
-	Fireball(float incrX, float incrY, Coordinates startPoint, int z);
-	~Fireball();
+	~Platform();
 
-	//bool drawBullet(Earth* earth, Tank* tank1, Tank* tank2);
 	bool loadGLTexture();
-	Vertex moveFireball();
-
-	Coordinates getCenter() { return center; };
 };

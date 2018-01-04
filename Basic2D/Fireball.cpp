@@ -8,10 +8,11 @@
 
 #include "SOIL.h"
 
-Fireball::Fireball(int power, int angle, Vertex startPoint) {
+Fireball::Fireball(int power, int angle, Coordinates startPoint, int z) {
 	center = startPoint;
 	startPower = power;
 	startAngle = angle;
+	this->z = z;
 
 	vector.clear();
 
@@ -28,8 +29,9 @@ Fireball::Fireball(int power, int angle, Vertex startPoint) {
 	this->loadGLTexture();
 }
 
-Fireball::Fireball(float incrX, float incrY, Vertex startPoint) {
+Fireball::Fireball(float incrX, float incrY, Coordinates startPoint, int z) {
 	center = startPoint;
+	this->z = z;
 
 	vector.clear();
 

@@ -69,6 +69,7 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="StartScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +79,7 @@
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="StartScreen.h" />
     <ClInclude Include="Vertex.h" />

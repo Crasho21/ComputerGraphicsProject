@@ -15,6 +15,7 @@ const int BAT = 0;
 
 class Enemy {
 private:
+	Coordinates center;
 	std::vector<Vertex> vector;
 	std::vector<Vertex> reverseVector;
 	std::vector<Vertex> temp;
@@ -38,11 +39,8 @@ private:
 
 public:
 
-	Coordinates center;
-
 	Enemy() {}
 	Enemy(Coordinates center, float z, int id) {
-		//center = Coordinates(-0.5, 0.5);
 		this->center = center;
 		this->z = z;
 		this->id = id;

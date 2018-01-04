@@ -1,14 +1,76 @@
-﻿  Enemy.cpp
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(24): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(25): warning C4305: 'initializing': truncation from 'double' to 'float'
-Enemy.cpp(14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+﻿  Fireball.cpp
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+Fireball.cpp(13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+Fireball.cpp(14): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+Fireball.cpp(15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+Fireball.cpp(34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+Fireball.cpp(116): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
+  Hero.cpp
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(17): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(22): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(23): warning C4305: 'initializing': truncation from 'double' to 'float'
+Hero.cpp(14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
+Hero.cpp(20): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
+Hero.cpp(146): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(147): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(148): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(149): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(150): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(154): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(155): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(156): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(157): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(158): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Hero.cpp(172): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  main.cpp
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(25): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(26): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(17): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(22): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(23): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(24): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(26): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+main.cpp(212): warning C4838: conversion from 'int' to 'BYTE' requires a narrowing conversion
+  Model.cpp
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(25): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(26): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(17): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(22): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(23): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(24): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(26): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\StartScreen.h(27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+Model.cpp(40): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(41): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(144): warning C4305: 'argument': truncation from 'double' to 'float'
 SOIL.lib(SOIL.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  1 of 149 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  All 151 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
 SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'C:\Users\Cristian\Downloads\University\Computer Graphics\Basic2D_2\Release\vc100.pdb'; linking object as if no debug info
 SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'C:\Users\Cristian\Downloads\University\Computer Graphics\Basic2D_2\Release\vc100.pdb'; linking object as if no debug info
