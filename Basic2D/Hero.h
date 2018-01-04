@@ -6,18 +6,28 @@
 #include "Fireball.h"
 #include "Vertex.h"
 
+// Stati di hero 
+const int IDLE = 0;
+const int MOVE = 1;
+const int ATTACK = 2;
+const int JUMP = 3;
+const int HURT = 4;
+const int DIE = 5;
+
 class Hero {
 private:
 	std::vector<Vertex> vector;
 	std::vector<Vertex> reverseVector;
 
-	GLuint texture[30];
+	GLuint heroTexture[30];
 
 	float incrx = 0.005;
 	float incry = 0.01;
 	bool left = false;				// hero watching left?
-	bool idle = true;				// hero idling?
-	bool moving = false;			// hero moving?
+	bool attacking = false;
+	int state= IDLE;				// State of the hero
+	int fireballIndex = 0;
+	int numFireball = 0;
 
 	float width = 0.2;
 	float height = 0.2;
@@ -29,7 +39,7 @@ private:
 
 	int health = 100;		// Indicatore di punti vita
 
-	Fireball *fireball;
+	std::vector<Fireball> fireball;
 
 public:
 
@@ -40,6 +50,7 @@ public:
 		//center = Coordinates(-0.5, 0.5);
 		this->center = center;
 		this->z = z;
+		fireball.clear();
 		vector.clear();
 		vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 0, 0));	//basso dx
 		vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 1, 0));	//basso sx
@@ -51,7 +62,7 @@ public:
 		reverseVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto sx
 		reverseVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto dx
 
-		fireball = NULL;
+		//fireball = NULL;
 
 		this->loadGLTexture();
 	}
@@ -68,7 +79,7 @@ public:
 	void calcGravity(float);
 	float squareDistance(Vertex other);
 
-	void userMove(int leftKey, int rightKey, double limitWindow, float earthY);
+	void userMove(int leftKey, int rightKey, int spaceKey, double limitWindow, float earthY, int dsElapsed);
 	void userChangePowerAngle(int minusPowerKey, int plusPowerKey, int minusAngleKey, int plusAngleKey);
 
 	boolean userFireCommand(int keyFire);

@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include "Enemy.h"
+#include "Fireball.h"
 #include "Hero.h"
 #include "StartScreen.h"
 #include "Vertex.h"
@@ -52,7 +53,8 @@ public:
 
 private:
 	//  projection limits in X and Y: x in [-plx, plx], y in [-ply, ply]
-	double plx, ply;
+	double plx = 1;
+	double ply = 1;
 	int Wheight, Wwidth;  // window dimensions in pixels
 
 	int frames;           // n. of frames
@@ -60,6 +62,8 @@ private:
 	double fps;
 
 	StartScreen startScreen;
+
+	Fireball fireball;
 
 	//  model data
 	std::vector<Vertex> Background;   // background

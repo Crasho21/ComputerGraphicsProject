@@ -12,8 +12,8 @@ bool Enemy::loadGLTexture() {
 	// Bat textures
 	for (int i = 0; i < 8; i++) {
 		sprintf(ll, "../Data/Enemies/Bat02_Fly_%02d.PNG", i);
-		this->texture[i] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-		if (texture[i] == 0) return false;
+		this->enemyTexture[i] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (enemyTexture[i] == 0) return false;
 	}
 
 	// Typical Texture Generation Using Data From The Bitmap
@@ -33,7 +33,7 @@ bool Enemy::drawGL(double Full_elapsed) {
 	glLoadIdentity();
 
 	int TexF = id + ((int((Full_elapsed * 8))) % 8);
-	glBindTexture(GL_TEXTURE_2D, texture[TexF]);
+	glBindTexture(GL_TEXTURE_2D, enemyTexture[TexF]);
 
 	//  Enemy geometrical trasformations
 	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix

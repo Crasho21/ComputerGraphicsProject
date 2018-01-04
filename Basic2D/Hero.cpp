@@ -12,14 +12,14 @@ bool Hero::loadGLTexture() {
 	// Hero idle textures
 	for (int i = 0; i < 6; i++) {
 		sprintf(ll, "../Data/Hero/idle_%02d.PNG", i + 1);
-		this->texture[i] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-		if (texture[i] == 0) return false;
+		this->heroTexture[i] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (heroTexture[i] == 0) return false;
 	}
 	// Hero walk textures
 	for (int i = 0; i < 6; i++) {
 		sprintf(ll, "../Data/Hero/walk_%02d.PNG", i + 1);
-		this->texture[i + 6] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-		if (texture[i + 6] == 0) return false;
+		this->heroTexture[i + 6] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (heroTexture[i + 6] == 0) return false;
 	}
 
 	// Typical Texture Generation Using Data From The Bitmap
@@ -32,8 +32,7 @@ bool Hero::loadGLTexture() {
 }
 
 void Hero::moveX(float incrx) {
-	idle = false;
-	moving = true;
+	state = MOVE;
 	for (int i = 0; i < 4; i++) {
 		vector[i].x += incrx;
 		reverseVector[i].x += incrx;
@@ -50,16 +49,40 @@ bool Hero::drawGL(double Full_elapsed) {
 	glLoadIdentity();
 
 	int heroTexF;
-	if (idle) {
-		heroTexF = ((int((Full_elapsed * 6))) % 6);
-		glBindTexture(GL_TEXTURE_2D, texture[heroTexF]);
-	}
-	else if (moving) {
-		heroTexF = 6 + ((int((Full_elapsed * 6))) % 6);
-		glBindTexture(GL_TEXTURE_2D, texture[heroTexF]);
+	int id = 0;
+	Coordinates c;
+	switch (state){
+		case IDLE:
+			heroTexF = ((int((Full_elapsed * 6))) % 6);
+			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
+			break;
+		case MOVE:
+			heroTexF = 6 + ((int((Full_elapsed * 6))) % 6);
+			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
+			break;
+		case ATTACK:
+			heroTexF = 6 + ((int((Full_elapsed * 6))) % 6);
+			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
+			c = Coordinates(center.x + 0.2, center.y);
+			fireball.push_back(Fireball(c, z, id));
+			id++;
+			fireballIndex++;
+			numFireball++;
+			if (fireballIndex % 10 == 0) fireballIndex = 0;
+			if (numFireball > 10) {
+				numFireball = 10;
+				fireball.erase(fireball.begin());
+			}
+			break;
+		case JUMP:
+			break;
+		case HURT:
+			break;
+		case DIE:
+			break;
 	}
 
-	//  Hero geometrical trasformations
+	// Hero geometrical trasformations
 	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
 	glLoadIdentity();						// Reset The View
 	glEnable(GL_BLEND);
@@ -82,8 +105,13 @@ bool Hero::drawGL(double Full_elapsed) {
 
 	glDisable(GL_TEXTURE_2D);
 
-	idle = true;
-	moving = false;
+	if (attacking) {
+		for (int i = 0; i < numFireball; i++) {
+			fireball[i].drawFireball(Full_elapsed);
+		}
+	}
+
+	state = IDLE;
 
 	return true;
 }
@@ -104,8 +132,7 @@ bool Hero::drawGL(double Full_elapsed) {
 //	}
 //}
 
-
-void Hero::userMove(int leftKey, int rightKey, double limitWindow, float earthY) {
+void Hero::userMove(int leftKey, int rightKey, int spaceKey, double limitWindow, float earthY, int dsElapsed) {
 	if (vector[0].y > earthY) {	//Se sto volando
 		for (int i = 0; i < 4; i++) {
 			vector[i].y -= incry;
@@ -121,7 +148,10 @@ void Hero::userMove(int leftKey, int rightKey, double limitWindow, float earthY)
 			left = true;
 			moveX(-incrx);
 		}
-
+		if (dsElapsed % 5 == 0 && spaceKey) {
+			state = ATTACK;
+			attacking = true;
+		}
 	}
 	else if ((vector[1].y - earthY)>-0.1) {	//Se il dislivello non è eccessivo
 		for (int i = 0; i < 2; i++) {
@@ -139,6 +169,11 @@ void Hero::userMove(int leftKey, int rightKey, double limitWindow, float earthY)
 		else if (leftKey) {
 			left = true;
 			moveX(-incry);
+		}
+		if (dsElapsed % 1 == 0 && spaceKey) {
+			state = ATTACK;
+			attacking = true;
+			Sleep(100);
 		}
 	}
 
@@ -169,7 +204,7 @@ boolean Hero::userFireCommand(int keyFire) {
 
 void Hero::shotFireball(int power, int angle) {
 	// Sparo della fireball a partire dalla posizione attuale dell'eroe
-	fireball = new Fireball(power, angle, Coordinates(center.x, center.y + (height / 2)), z);
+	//fireball = new Fireball(power, angle, Coordinates(center.x, center.y + (height / 2)), z);
 }
 
 void Hero::calcolaDanno(Vertex center, float radius) { // TODO

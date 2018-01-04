@@ -20,7 +20,7 @@ private:
 	std::vector<Vertex> reverseVector;
 	std::vector<Vertex> temp;
 
-	GLuint texture[30];
+	GLuint enemyTexture[30];
 
 	float width = 0.2;
 	float height = 0.2;

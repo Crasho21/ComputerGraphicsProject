@@ -40,6 +40,7 @@ bool MyModel::InitGL(void)
 	hero = Hero(Coordinates(-0.8, -0.35), -4);
 	enemy = Enemy(Coordinates(0.5, -0.35), -4, BAT);
 	temp = bat;
+	//fireball = Fireball(Coordinates(0.0, -0.35), -4, 1);
 
 	return true;										// Initialization Went OK
 }
@@ -121,33 +122,35 @@ bool MyModel::DrawGLScene(void)
 	glLoadIdentity();									// Reset The View
 
 	switch (state) {
-	case START_SCREEN:
-		if (keys[VK_RETURN]) state = PLAY_SCREEN;
+		case START_SCREEN:
+			if (keys[VK_RETURN]) state = PLAY_SCREEN;
 
-		//earthModel.drawGLEarth();
+			//earthModel.drawGLEarth();
 
-		startScreen.drawGL();
+			startScreen.drawGL();
 
-		break;
+			break;
 
-	case PLAY_SCREEN:
-		//glFlush();
-		glBindTexture(GL_TEXTURE_2D, background[0]);
+		case PLAY_SCREEN:
+			//glFlush();
+			glBindTexture(GL_TEXTURE_2D, background[0]);
 
-		//  Background
-		glBegin(GL_QUADS);
-		for (int i = 0; i < 4; i++) {
-			glTexCoord2f(Background[i].u, Background[i].v);
-			glVertex3f(Background[i].x, Background[i].y, Background[i].z);
-		}
-		glEnd();
-		hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], plx, -0.4);
-		hero.drawGL(Full_elapsed);
+			//  Background
+			glBegin(GL_QUADS);
+			for (int i = 0; i < 4; i++) {
+				glTexCoord2f(Background[i].u, Background[i].v);
+				glVertex3f(Background[i].x, Background[i].y, Background[i].z);
+			}
+			glEnd();
+			//if ((int)(Full_elapsed * 10) % 2 == 0) {
+				hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], plx, -0.4, (int)(Full_elapsed * 10));
+			//}
+			hero.drawGL(Full_elapsed);
+			//fireball.drawFireball(Full_elapsed);
+			//enemy.moveX(Full_elapsed);
+			enemy.drawGL(Full_elapsed);
 
-		//enemy.moveX(Full_elapsed);
-		enemy.drawGL(Full_elapsed);
-
-		break;
+			break;
 	}
 	/*//  Texture for the hero, change every 1/6 sec.
 	int heroTexF = ((int((Full_elapsed * 6))) % 6);

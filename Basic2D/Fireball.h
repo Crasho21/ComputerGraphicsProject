@@ -9,12 +9,12 @@
 
 class Fireball {
 private:
-	float width = 0.05;
-	float height = 0.025;
+	float width = 0.2;
+	float height = 0.1;
 	Coordinates center;
-	std::vector<Vertex> vector;
+	std::vector<Vertex> fireballVector;
 
-	GLuint texture[3];
+	GLuint fireballTexture[3];
 
 	float startPower;
 	float startAngle;
@@ -37,12 +37,11 @@ public:
 		this->id = id; 
 		isVisible = false;
 
-		vector.clear();
-
-		vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
-		vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
-		vector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto sx
-		vector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto dx
+		fireballVector.clear();
+		fireballVector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
+		fireballVector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
+		fireballVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto sx
+		fireballVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto dx
 
 		this->loadGLTexture();
 	}
@@ -52,6 +51,7 @@ public:
 
 	//bool drawBullet(Earth* earth, Tank* tank1, Tank* tank2);
 	bool loadGLTexture();
+	bool drawFireball(double Full_elapsed);
 	Vertex moveFireball();
 
 	Coordinates getCenter() { return center; };
