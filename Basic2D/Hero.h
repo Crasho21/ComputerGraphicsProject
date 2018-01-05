@@ -69,6 +69,18 @@ public:
 
 	~Hero() {}
 
+	std::vector<Fireball> getFireball() {
+		return fireball;
+	}
+
+	void setFireball(std::vector<Fireball> f) {
+		this->fireball = f;
+	}
+
+	bool getAttacking() {
+		return this->attacking;
+	}
+
 	bool loadGLTexture();
 
 	void moveX(float incr);

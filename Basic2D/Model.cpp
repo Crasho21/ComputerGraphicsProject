@@ -38,12 +38,19 @@ bool MyModel::InitGL(void)
 	// Initializations
 	startScreen = StartScreen(plx, ply);
 	hero = Hero(Coordinates(-0.8, -0.35), -4);
-	enemy.push_back(Enemy(Coordinates(0.5, -0.35), -4, BAT));
+	e = Enemy(Coordinates(0.5, -0.3), -4, BAT);
+	enemy.push_back(e);
 	numEnemies++;
 	temp = bat;
-	enemy.push_back(Enemy(Coordinates(0.5, 0.25), -4, WALKING_MONSTER));
+	e = Enemy(Coordinates(0.5, 0.25), -4, WALKING_MONSTER);
+	enemy.push_back(e);
 	numEnemies++;
-	//fireball = Fireball(Coordinates(0.0, -0.35), -4, 1);
+	p = Platform(Coordinates(0.0, -0.59), 2, 0.4, -4, 0, 0);
+	platforms.push_back(p);
+	numPlatforms++;
+	p = Platform(Coordinates(0.5, 0.1), 0.5, 0.1, -4, 3, 1);
+	platforms.push_back(p);
+	numPlatforms++;
 
 	return true;										// Initialization Went OK
 }
@@ -153,6 +160,12 @@ bool MyModel::DrawGLScene(void)
 			//enemy.moveX(Full_elapsed);
 			for (int i = 0; i < numEnemies; i++) {
 				enemy[i].drawGL(Full_elapsed);
+			}
+			for (int i = 0; i < numPlatforms; i++) {
+				platforms[i].drawGL();
+			}
+			if (hero.getAttacking()) {
+				colliderFireballsEnemies();
 			}
 
 			break;
@@ -342,4 +355,34 @@ void MyModel::glPrint(const char *fmt, ...)					// Custom GL "Print" Routine
 	glListBase(base - 32);								// Sets The Base Character to 32
 	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);	// Draws The Display List Text
 	glPopAttrib();										// Pops The Display List Bits
+}
+
+void MyModel::colliderFireballsEnemies() {
+	std::vector<Fireball> f = hero.getFireball();
+	for (int i = 0; i < f.size(); i++) {
+		for (int j = 0; j < enemy.size(); j++) {
+			if (enemy[j].getIsVisible()) {
+				if (f[i].getCenter().y - (f[i].getHeigth() / 2) <= enemy[j].getCenter().y + (enemy[j].getHeigth() / 2) &&		// Il bordo inferiore della fireball deve essere <= del bordo superiore dell'enemy
+					f[i].getCenter().y + (f[i].getHeigth() / 2) >= enemy[j].getCenter().y - (enemy[j].getHeigth() / 2)) {		// Il bordo superiore della fireball deve essere >= del bordo inferiore dell'enemy
+					if (enemy[j].getPx() != 0) {
+						posx = enemy[j].getPx();
+					}
+					if (f[i].getCenter().x - (f[i].getWidth() / 2) <= enemy[j].getCenter().x + posx + (enemy[j].getWidth() / 2) &&		// Il bordo sinistro della fireball deve essere <= del bordo destro dell'enemy
+						f[i].getCenter().x + (f[i].getWidth() / 2) >= enemy[j].getCenter().x + posx - (enemy[j].getWidth() / 2)) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
+						f[i].setIsVisible(false);
+						hero.setFireball(f);
+						enemy[j].setDead(true);
+						enemy[j].setIsVisible(false);
+						
+						//TODO Sostituire con esplosione
+						//p = Platform(Coordinates(enemy[j].getCenter().x + posx, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
+						//p.drawGL();
+
+						//f.erase(f.begin() + i);
+						//enemy.erase(enemy.begin() + i);
+					}
+				}
+			}
+		}
+	}
 }

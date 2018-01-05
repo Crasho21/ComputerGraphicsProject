@@ -69,7 +69,7 @@ bool Fireball::loadGLTexture() {
 
 // False se non è scoppiato il proiettile, true altrimenti
 bool Fireball::drawFireball(double Full_elapsed) {
-	//if (!isVisible) return false;
+	if (!isVisible) return false;
 
 	//Se esce dallo schermo
 	/*if (center.x < earth->leftLimit - 0.1 || center.x > earth->rightLimit + 0.1) {
@@ -123,7 +123,7 @@ bool Fireball::drawFireball(double Full_elapsed) {
 }
 
 Vertex Fireball::moveFireball() {
-	//if (!isVisible) return Vertex();
+	if (!isVisible) return Vertex();
 
 	//Incremento delle posizioni
 	center.x += incrX;

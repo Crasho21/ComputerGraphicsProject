@@ -27,6 +27,7 @@ private:
 
 	int id;
 	bool left;
+	bool isVisible;
 
 	std::vector<Vertex> direction;
 
@@ -35,8 +36,9 @@ public:
 	Fireball(Coordinates center, float z, bool left, int id) {
 		this->center = center;
 		this->z = z;
-		this->id = id; 
+		this->id = id;
 		this->left = left;
+		this->isVisible = true;
 		incrX = 0.01;
 		incrY = 0;
 
@@ -57,10 +59,25 @@ public:
 	Fireball(float incrX, float incrY, Coordinates startPoint, int z);
 	~Fireball();
 
+	Coordinates getCenter() {
+		return center;
+	}
+
+	float getHeigth() {
+		return this->height;
+	}
+
+	float getWidth() {
+		return this->width;
+	}
+
+	void setIsVisible(bool iv) {
+		this->isVisible = iv;
+	}
+
 	//bool drawBullet(Earth* earth, Tank* tank1, Tank* tank2);
 	bool loadGLTexture();
 	bool drawFireball(double Full_elapsed);
 	Vertex moveFireball();
 
-	Coordinates getCenter() { return center; };
 };

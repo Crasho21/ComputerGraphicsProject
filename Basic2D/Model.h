@@ -21,6 +21,7 @@
 #include "Enemy.h"
 #include "Fireball.h"
 #include "Hero.h"
+#include "Platform.h"
 #include "StartScreen.h"
 #include "Vertex.h"
 
@@ -73,7 +74,12 @@ private:
 	std::vector<Vertex> temp;
 	Hero hero;
 	std::vector<Enemy> enemy;
+	Enemy e;
 	int numEnemies = 0;
+	std::vector<Platform> platforms;
+	int numPlatforms = 0;
+	Platform p;
+	double posx = 0;
 
 	clock_t Tstamp, Tstart;
 	double Full_elapsed;  // elapsed time in seconds from the beginning of the program
@@ -114,6 +120,7 @@ public:
 	bool InitGL(void);
 	void ReSizeGLScene(int width, int height);
 	void glPrint(const char *fmt, ...);			// Custom GL "Print" Routine
+	void colliderFireballsEnemies();
 
 private:
 	bool LoadGLTextures(void);

@@ -30,6 +30,7 @@ bool Enemy::loadGLTexture() {
 }
 
 bool Enemy::drawGL(double Full_elapsed) {
+	if (!isVisible) return false;
 	glColor3f(1.0, 1.0, 1.0);
 
 	glEnable(GL_TEXTURE_2D);
@@ -48,18 +49,26 @@ bool Enemy::drawGL(double Full_elapsed) {
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0);
 
-	px = radious * cos(omega * Full_elapsed);
-	minx = vector[0].x - radious + 0.1;
-	maxx = vector[0].x + radious - 0.1;
+	if (dead) {
+		for (int i = 0; i < 4; i++) temp[i].x += px;
+		px = 0;
+	}
+	else {
+		px = radious * cos(omega * Full_elapsed);
+	}
+	minx = vector[0].x - radious + 0.01;
+	maxx = vector[0].x + radious - 0.01;
 	py = 0;
 	glTranslatef((float)px, (float)py, 0);
 	
 	glBegin(GL_QUADS);
 	if (vector[0].x + px >= maxx) {
 		temp = reverseVector;
+		left = true;
 	}
 	else if (reverseVector[0].x + px <= minx) {
 		temp = vector;
+		left = false;
 	}
 	for (int i = 0; i < 4; i++) {
 		glTexCoord2f(temp[i].u, temp[i].v);

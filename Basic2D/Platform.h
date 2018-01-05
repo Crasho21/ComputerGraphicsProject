@@ -9,20 +9,24 @@
 
 class Platform {
 private:
-	float width = 0.05;
-	float height = 0.025;
+	float width;
+	float height;
 	float z;
 	int id;
+	int texF;
 	Coordinates center;
 	std::vector<Vertex> vector;
 
-	GLuint texture[30];
+	GLuint platformTexture[30];
 public:
 	Platform() {}
-	Platform(Coordinates center, float z, int id) {
+	Platform(Coordinates center, float width, float height, float z, int texF, int id) {
 		this->center = center;
+		this->width = width;
+		this->height = height;
 		this->z = z;
 		this->id = id;
+		this->texF = texF;
 		vector.clear();
 		vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
 		vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
@@ -31,7 +35,8 @@ public:
 
 		this->loadGLTexture();
 	}
-	~Platform();
+	~Platform() {}
 
 	bool loadGLTexture();
+	bool drawGL();
 };

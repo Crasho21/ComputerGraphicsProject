@@ -36,6 +36,9 @@ private:
 	double px, py;
 	double minx;
 	double maxx;
+	bool left;
+	bool dead;
+	bool isVisible;
 
 public:
 
@@ -44,6 +47,9 @@ public:
 		this->center = center;
 		this->z = z;
 		this->id = id;
+		this->left = true;
+		this->dead = false;
+		this->isVisible = true;
 		vector.clear();
 		vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 0, 0));	//basso dx
 		vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 1, 0));	//basso sx
@@ -61,6 +67,42 @@ public:
 	}
 
 	~Enemy() {}
+
+	Coordinates getCenter() {
+		return center;
+	}
+
+	float getHeigth() {
+		return this->height;
+	}
+
+	float getWidth() {
+		return this->width;
+	}
+
+	double getPx() {
+		return this->px;
+	}
+
+	bool getLeft() {
+		return this->left;
+	}
+
+	void setDead(bool d) {
+		this->dead = d;;
+	}
+
+	bool getDead() {
+		return this->dead;
+	}
+
+	void setIsVisible(bool iv) {
+		this->isVisible = iv;
+	}
+
+	bool getIsVisible() {
+		return this->isVisible;
+	}
 
 	bool loadGLTexture();
 
