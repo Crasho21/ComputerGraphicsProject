@@ -14,16 +14,16 @@ Fireball::Fireball(int power, int angle, Coordinates startPoint, int z) {
 	startAngle = angle;
 	this->z = z;
 
-	fireballVector.clear();
-	fireballVector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
-	fireballVector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
-	fireballVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto sx
-	fireballVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto dx
+	vector.clear();
+	vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 0, 0));	//basso dx
+	vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 1, 0));	//basso sx
+	vector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 1, 1));	//alto sx
+	vector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 0, 1));	//alto dx
 
 	incrX = ((float)power / 2000);
 	incrY = ((float)power / 2000);
 
-	isVisible = true;
+	//isVisible = true;
 
 	this->loadGLTexture();
 }
@@ -32,16 +32,16 @@ Fireball::Fireball(float incrX, float incrY, Coordinates startPoint, int z) {
 	center = startPoint;
 	this->z = z;
 
-	fireballVector.clear();
-	fireballVector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
-	fireballVector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
-	fireballVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto sx
-	fireballVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto dx
+	vector.clear();
+	vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 0, 0));	//basso dx
+	vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 1, 0));	//basso sx
+	vector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 1, 1));	//alto sx
+	vector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 0, 1));	//alto dx
 
 	this->incrX = incrX;
 	this->incrY = incrY;
 
-	isVisible = true;
+	//isVisible = true;
 
 	this->loadGLTexture();
 }
@@ -54,7 +54,7 @@ bool Fireball::loadGLTexture() {
 	char ll[200];
 	// Fireball textures
 	for (int i = 0; i < 3; i++) {
-		sprintf(ll, "../Data/Effects/fireball.PNG", i + 1);
+		sprintf(ll, "../Data/Effects/fireball_%02d.PNG", i + 1);
 		this->fireballTexture[i] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 		if (fireballTexture[i] == 0) return false;
 	}
@@ -106,8 +106,14 @@ bool Fireball::drawFireball(double Full_elapsed) {
 	//Proietto
 	glBegin(GL_QUADS);
 	for (int i = 0; i < 4; i++) {
-		glTexCoord2f(fireballVector[i].u, fireballVector[i].v);
-		glVertex3f(fireballVector[i].x, fireballVector[i].y, fireballVector[i].z);
+		if (left) {
+			glTexCoord2f(reverseVector[i].u, reverseVector[i].v);
+			glVertex3f(reverseVector[i].x, reverseVector[i].y, reverseVector[i].z);
+		}
+		else {
+			glTexCoord2f(vector[i].u, vector[i].v);
+			glVertex3f(vector[i].x, vector[i].y, vector[i].z);
+		}
 	}
 	glEnd();
 
@@ -117,19 +123,23 @@ bool Fireball::drawFireball(double Full_elapsed) {
 }
 
 Vertex Fireball::moveFireball() {
-	if (!isVisible) return Vertex();
+	//if (!isVisible) return Vertex();
 
 	//Incremento delle posizioni
 	center.x += incrX;
 	//center.y += incrY;
 
 	for (int i = 0; i < 4; i++) {
-		fireballVector[i].x += incrX;
-		fireballVector[i].y += incrY;
+		if (left) {
+			reverseVector[i].x -= incrX;
+		}
+		else {
+			vector[i].x += incrX;
+		}
 	}
 
 	//Disegno direction seguita
-	direction.push_back(Vertex(center.x, center.y, z));
+	//direction.push_back(Vertex(center.x, center.y, z));
 
 	return Vertex(center.x, center.y, 0);
 }

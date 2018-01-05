@@ -38,8 +38,11 @@ bool MyModel::InitGL(void)
 	// Initializations
 	startScreen = StartScreen(plx, ply);
 	hero = Hero(Coordinates(-0.8, -0.35), -4);
-	enemy = Enemy(Coordinates(0.5, -0.35), -4, BAT);
+	enemy.push_back(Enemy(Coordinates(0.5, -0.35), -4, BAT));
+	numEnemies++;
 	temp = bat;
+	enemy.push_back(Enemy(Coordinates(0.5, 0.25), -4, WALKING_MONSTER));
+	numEnemies++;
 	//fireball = Fireball(Coordinates(0.0, -0.35), -4, 1);
 
 	return true;										// Initialization Went OK
@@ -148,7 +151,9 @@ bool MyModel::DrawGLScene(void)
 			hero.drawGL(Full_elapsed);
 			//fireball.drawFireball(Full_elapsed);
 			//enemy.moveX(Full_elapsed);
-			enemy.drawGL(Full_elapsed);
+			for (int i = 0; i < numEnemies; i++) {
+				enemy[i].drawGL(Full_elapsed);
+			}
 
 			break;
 	}

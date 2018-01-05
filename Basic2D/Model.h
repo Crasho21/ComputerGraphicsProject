@@ -72,7 +72,8 @@ private:
 	std::vector<Vertex> rbat;
 	std::vector<Vertex> temp;
 	Hero hero;
-	Enemy enemy;
+	std::vector<Enemy> enemy;
+	int numEnemies = 0;
 
 	clock_t Tstamp, Tstart;
 	double Full_elapsed;  // elapsed time in seconds from the beginning of the program
@@ -100,6 +101,7 @@ public:
 		rbat.push_back(Vertex(1, -1, -5, 0, 0));
 		rbat.push_back(Vertex(1, 1, -5, 0, 1));
 		rbat.push_back(Vertex(-1, 1, -5, 1, 1));
+		enemy.clear();
 
 		this->Tstart = this->Tstamp = clock();
 		this->Full_elapsed = 0;

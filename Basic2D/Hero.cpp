@@ -63,8 +63,13 @@ bool Hero::drawGL(double Full_elapsed) {
 		case ATTACK:
 			heroTexF = 6 + ((int((Full_elapsed * 6))) % 6);
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
-			c = Coordinates(center.x + 0.2, center.y);
-			fireball.push_back(Fireball(c, z, id));
+			if (left) {
+				c = Coordinates(center.x - 0.2, center.y);
+			}
+			else {
+				c = Coordinates(center.x + 0.2, center.y);
+			}
+			fireball.push_back(Fireball(c, z, left, id));
 			id++;
 			fireballIndex++;
 			numFireball++;
@@ -107,6 +112,7 @@ bool Hero::drawGL(double Full_elapsed) {
 
 	if (attacking) {
 		for (int i = 0; i < numFireball; i++) {
+			fireball[i].moveFireball();
 			fireball[i].drawFireball(Full_elapsed);
 		}
 	}

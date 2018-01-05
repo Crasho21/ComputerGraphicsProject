@@ -12,7 +12,8 @@ private:
 	float width = 0.2;
 	float height = 0.1;
 	Coordinates center;
-	std::vector<Vertex> fireballVector;
+	std::vector<Vertex> vector;
+	std::vector<Vertex> reverseVector;
 
 	GLuint fireballTexture[3];
 
@@ -25,23 +26,30 @@ private:
 	float z = -5.0;
 
 	int id;
-	bool isVisible = false;
+	bool left;
 
 	std::vector<Vertex> direction;
 
 public:
 	Fireball() {};
-	Fireball(Coordinates center, float z, int id) {
+	Fireball(Coordinates center, float z, bool left, int id) {
 		this->center = center;
 		this->z = z;
 		this->id = id; 
-		isVisible = false;
+		this->left = left;
+		incrX = 0.01;
+		incrY = 0;
 
-		fireballVector.clear();
-		fireballVector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso dx
-		fireballVector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso sx
-		fireballVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto sx
-		fireballVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto dx
+		vector.clear();
+		vector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 0, 0));	//basso dx
+		vector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 1, 0));	//basso sx
+		vector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 1, 1));	//alto sx
+		vector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 0, 1));	//alto dx
+		reverseVector.clear();
+		reverseVector.push_back(Vertex(center.x - width / 2, center.y - height / 2, z, 1, 0));	//basso dx
+		reverseVector.push_back(Vertex(center.x + width / 2, center.y - height / 2, z, 0, 0));	//basso sx
+		reverseVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto sx
+		reverseVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto dx
 
 		this->loadGLTexture();
 	}

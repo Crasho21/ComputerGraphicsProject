@@ -9,7 +9,7 @@
 
 // Tipo di nemico 
 const int BAT = 0;
-//const int PLAY_SCREEN = 1;
+const int WALKING_MONSTER = 1;
 //const int WIN_SCREEN = 2;
 //const int LOSE_SCREEN = 3;
 

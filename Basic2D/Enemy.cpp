@@ -15,7 +15,12 @@ bool Enemy::loadGLTexture() {
 		this->enemyTexture[i] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 		if (enemyTexture[i] == 0) return false;
 	}
-
+	// Walking monster textures
+	for (int i = 0; i < 8; i++) {
+		sprintf(ll, "../Data/Enemies/walking_monster_%02d.PNG", i);
+		this->enemyTexture[i + 8] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (enemyTexture[i + 8] == 0) return false;
+	}
 	// Typical Texture Generation Using Data From The Bitmap
 	//glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -32,7 +37,7 @@ bool Enemy::drawGL(double Full_elapsed) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glLoadIdentity();
 
-	int TexF = id + ((int((Full_elapsed * 8))) % 8);
+	int TexF = id * 8 + ((int((Full_elapsed * 8))) % 8);
 	glBindTexture(GL_TEXTURE_2D, enemyTexture[TexF]);
 
 	//  Enemy geometrical trasformations
