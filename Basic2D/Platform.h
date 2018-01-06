@@ -38,5 +38,7 @@ public:
 	~Platform() {}
 
 	bool loadGLTexture();
-	bool drawGL();
+	bool drawGL(double movement);
+
+	void moveX(float incrx);
 };

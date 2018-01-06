@@ -36,7 +36,7 @@ bool Platform::loadGLTexture() {
 	return true;										// Return Success
 }
 
-bool Platform::drawGL() {
+bool Platform::drawGL(double movement) {
 	glColor3f(1.0, 1.0, 1.0);
 
 	glEnable(GL_TEXTURE_2D);
@@ -49,6 +49,7 @@ bool Platform::drawGL() {
 	//  Platform geometrical trasformations
 	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
 	glLoadIdentity();						// Reset The View
+	if (id != 0) glTranslatef((float)movement, 0, 0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_ALPHA_TEST);
@@ -64,4 +65,9 @@ bool Platform::drawGL() {
 	glDisable(GL_TEXTURE_2D);
 
 	return true;
+}
+
+void Platform::moveX(float incrx) {
+	glBindTexture(GL_TEXTURE_2D, platformTexture[texF]);
+	glTranslatef((float)incrx, 0, 0);
 }

@@ -67,7 +67,8 @@ private:
 	Fireball fireball;
 
 	//  model data
-	std::vector<Vertex> Background;   // background
+	std::vector<Vertex> Background;   // 
+	double movement;
 	std::vector<Vertex> fire;         // floating fire
 	std::vector<Vertex> bat;          // floating bat
 	std::vector<Vertex> rbat;
@@ -95,6 +96,7 @@ public:
 		Background.push_back(Vertex(1, -1, -5, 0.5, 0));
 		Background.push_back(Vertex(1, 1, -5, 0.5, 1));
 		Background.push_back(Vertex(-1, 1, -5, 0, 1));
+		movement = 0;
 		// Bat textures
 		bat.clear();
 		bat.push_back(Vertex(-1, -1, -5, 0, 0));
@@ -120,7 +122,8 @@ public:
 	bool InitGL(void);
 	void ReSizeGLScene(int width, int height);
 	void glPrint(const char *fmt, ...);			// Custom GL "Print" Routine
-	void colliderFireballsEnemies();
+	void colliderFireballsEnemies(double movement);
+	void colliderHeroEnemies(double movement);
 
 private:
 	bool LoadGLTextures(void);

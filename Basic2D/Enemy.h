@@ -107,10 +107,9 @@ public:
 	bool loadGLTexture();
 
 	void moveX(float incrx);
-	void moveX(double Full_elapsed);
 	void setXPosition(float xPos);
 
-	bool drawGL(double Full_elapsed);
+	bool drawGL(double Full_elapsed, double movement);
 
 	void calcGravity(float);
 	float squareDistance(Vertex other);

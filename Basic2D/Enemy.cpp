@@ -29,7 +29,7 @@ bool Enemy::loadGLTexture() {
 	return true;										// Return Success
 }
 
-bool Enemy::drawGL(double Full_elapsed) {
+bool Enemy::drawGL(double Full_elapsed, double movement) {
 	if (!isVisible) return false;
 	glColor3f(1.0, 1.0, 1.0);
 
@@ -59,7 +59,7 @@ bool Enemy::drawGL(double Full_elapsed) {
 	minx = vector[0].x - radious + 0.01;
 	maxx = vector[0].x + radious - 0.01;
 	py = 0;
-	glTranslatef((float)px, (float)py, 0);
+	glTranslatef((float)px + (float)movement, (float)py, 0);
 	
 	glBegin(GL_QUADS);
 	if (vector[0].x + px >= maxx) {
@@ -79,6 +79,14 @@ bool Enemy::drawGL(double Full_elapsed) {
 	glDisable(GL_TEXTURE_2D);
 
 	return true;
+}
+
+void Enemy::moveX(float incrx) {
+	for (int i = 0; i < 4; i++) {
+		vector[i].x += incrx;
+		reverseVector[i].x += incrx;
+	}
+	center.x += incrx;
 }
 
 float Enemy::squareDistance(Vertex other) {

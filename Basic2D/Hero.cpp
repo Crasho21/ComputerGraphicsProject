@@ -21,6 +21,24 @@ bool Hero::loadGLTexture() {
 		this->heroTexture[i + 6] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 		if (heroTexture[i + 6] == 0) return false;
 	}
+	// Hero attack textures
+	for (int i = 0; i < 3; i++) {
+		sprintf(ll, "../Data/Hero/attack_%02d.PNG", i + 1);
+		this->heroTexture[i + 12] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (heroTexture[i + 12] == 0) return false;
+	}
+	// Hero die textures
+	for (int i = 0; i < 10; i++) {
+		sprintf(ll, "../Data/Hero/die_%02d.PNG", i + 1);
+		this->heroTexture[i + 15] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (heroTexture[i + 15] == 0) return false;
+	}
+	// Hero jump textures
+	for (int i = 0; i < 2; i++) {
+		sprintf(ll, "../Data/Hero/jump_%02d.PNG", i + 1);
+		this->heroTexture[i + 25] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (heroTexture[i + 25] == 0) return false;
+	}
 
 	// Typical Texture Generation Using Data From The Bitmap
 	//glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -31,13 +49,69 @@ bool Hero::loadGLTexture() {
 	return true;										// Return Success
 }
 
-void Hero::moveX(float incrx) {
+double Hero::moveX() {
 	state = MOVE;
 	for (int i = 0; i < 4; i++) {
-		vector[i].x += incrx;
-		reverseVector[i].x += incrx;
+		if (left) {
+			vector[i].x -= incrx;
+			reverseVector[i].x -= incrx;
+		}
+		else {
+			vector[i].x += incrx;
+			reverseVector[i].x += incrx;
+		}
 	}
-	center.x += incrx;
+	if (left) {
+		center.x -= incrx;
+	}
+	else {
+		center.x += incrx;
+	}
+	if (center.x > 0.5) {
+		movement -= 0.01;
+		center.x = 0.5;
+		vector[0].x = center.x - width / 2;
+		vector[1].x = center.x + width / 2;
+		vector[2].x = center.x + width / 2;
+		vector[3].x = center.x - width / 2;
+		reverseVector[0].x = center.x - width / 2;
+		reverseVector[1].x = center.x + width / 2;
+		reverseVector[2].x = center.x + width / 2;
+		reverseVector[3].x = center.x - width / 2;
+	}
+	else if (center.x < -0.8) {
+		movement += 0.01;
+		center.x = -0.8;
+		vector[0].x = center.x - width / 2;
+		vector[1].x = center.x + width / 2;
+		vector[2].x = center.x + width / 2;
+		vector[3].x = center.x - width / 2;
+		reverseVector[0].x = center.x - width / 2;
+		reverseVector[1].x = center.x + width / 2;
+		reverseVector[2].x = center.x + width / 2;
+		reverseVector[3].x = center.x - width / 2;
+	}
+	if (movement > 0) movement = 0;
+	//else if (movement < ) movement = ;		// TODO Inserire valore massimo di spostamento
+	return movement;
+}
+
+void Hero::moveY() {
+	state = JUMP;
+	//movy += incry;
+	/*for (int i = 0; i < 4; i++) {
+		vector[i].y += incry;
+		reverseVector[i].y += incry;
+	}
+	center.y += incry;*/
+	/*vector[0].y = center.y - height / 2;
+	vector[1].y = center.y - height / 2;
+	vector[2].y = center.y + height / 2;
+	vector[3].y = center.y + height / 2;
+	reverseVector[0].y = center.y - height / 2;
+	reverseVector[1].y = center.y - height / 2;
+	reverseVector[2].y = center.y + height / 2;
+	reverseVector[3].y = center.y + height / 2;*/
 }
 
 bool Hero::drawGL(double Full_elapsed) {
@@ -50,6 +124,10 @@ bool Hero::drawGL(double Full_elapsed) {
 
 	int heroTexF;
 	int id = 0;
+	movy = 0;
+	clock_t start = notrunning;
+	checkTimerReset(start);
+	double elapsed, omega;
 	Coordinates c;
 	switch (state){
 		case IDLE:
@@ -61,7 +139,7 @@ bool Hero::drawGL(double Full_elapsed) {
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
 			break;
 		case ATTACK:
-			heroTexF = 6 + ((int((Full_elapsed * 6))) % 6);
+			heroTexF = 12 + ((int((Full_elapsed * 3))) % 3);
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
 			if (left) {
 				c = Coordinates(center.x - 0.2, center.y);
@@ -80,16 +158,30 @@ bool Hero::drawGL(double Full_elapsed) {
 			}
 			break;
 		case JUMP:
+			heroTexF = 25 + ((int((Full_elapsed * 2))) % 2);
+			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
+			//  TIMING - start
+			/*if (start == notrunning) {
+				start = clock();
+			}
+			// elapsed time in seconds from the last draw
+			elapsed = (double)start / (double)CLOCKS_PER_SEC;
+			omega = PI / 2.0;
+			movy = -0.25 * cos(omega * elapsed);*/
 			break;
 		case HURT:
 			break;
 		case DIE:
+			heroTexF = 15 + ((int((Full_elapsed * 10))) % 10);
+			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
 			break;
 	}
 
 	// Hero geometrical trasformations
 	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
 	glLoadIdentity();						// Reset The View
+	if (movy > 0) movy = 0;
+	glTranslatef(0.0, -movy, 0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_ALPHA_TEST);
@@ -117,7 +209,8 @@ bool Hero::drawGL(double Full_elapsed) {
 		}
 	}
 
-	state = IDLE;
+	if (state != DIE && movy == 0) state = IDLE;
+	if (heroTexF == 24) dead = true;
 
 	return true;
 }
@@ -138,26 +231,14 @@ bool Hero::drawGL(double Full_elapsed) {
 //	}
 //}
 
-void Hero::userMove(int leftKey, int rightKey, int spaceKey, double limitWindow, float earthY, int dsElapsed) {
+double Hero::userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, int dsElapsed) {
+	if (state == DIE) return false;
 	if (vector[0].y > earthY) {	//Se sto volando
-		for (int i = 0; i < 4; i++) {
+		/*for (int i = 0; i < 4; i++) {
 			vector[i].y -= incry;
 			reverseVector[i].y -= incry;
-		}
+		}*/
 		center.y -= incry;
-
-		if (rightKey) {
-			left = false;
-			moveX(incrx);
-		}
-		else if (leftKey) {
-			left = true;
-			moveX(-incrx);
-		}
-		if (dsElapsed % 5 == 0 && spaceKey) {
-			state = ATTACK;
-			attacking = true;
-		}
 	}
 	else if ((vector[1].y - earthY)>-0.1) {	//Se il dislivello non è eccessivo
 		for (int i = 0; i < 2; i++) {
@@ -167,20 +248,23 @@ void Hero::userMove(int leftKey, int rightKey, int spaceKey, double limitWindow,
 			reverseVector[i + 2].y = earthY + height;
 		}
 		center.y = earthY + height / 2;
+	}
 
-		if (rightKey) {
-			left = false;
-			moveX(incry);
-		}
-		else if (leftKey) {
-			left = true;
-			moveX(-incry);
-		}
-		if (dsElapsed % 1 == 0 && spaceKey) {
-			state = ATTACK;
-			attacking = true;
-			Sleep(100);
-		}
+	if (rightKey) {
+		left = false;
+		movement = moveX();
+	}
+	else if (leftKey) {
+		left = true;
+		movement = moveX();
+	}
+	if (dsElapsed % 1 == 0 && spaceKey) {
+		state = ATTACK;
+		attacking = true;
+		Sleep(100);
+	}
+	if (jumpKey) {
+		moveY();
 	}
 
 	if (vector[1].x < -limitWindow) {	//sbatto a sx
@@ -198,6 +282,7 @@ void Hero::userMove(int leftKey, int rightKey, int spaceKey, double limitWindow,
 		vector[3].x = limitWindow;
 		center.x = limitWindow - width / 2;
 	}
+	return movement;
 }
 
 boolean Hero::userFireCommand(int keyFire) {

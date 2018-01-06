@@ -134,17 +134,13 @@ bool MyModel::DrawGLScene(void)
 	switch (state) {
 		case START_SCREEN:
 			if (keys[VK_RETURN]) state = PLAY_SCREEN;
-
-			//earthModel.drawGLEarth();
-
 			startScreen.drawGL();
-
 			break;
 
 		case PLAY_SCREEN:
-			//glFlush();
+			//if (hero.getDead()) state = LOSE_SCREEN;
 			glBindTexture(GL_TEXTURE_2D, background[0]);
-
+			glTranslatef((float)movement, 0, 0);
 			//  Background
 			glBegin(GL_QUADS);
 			for (int i = 0; i < 4; i++) {
@@ -152,22 +148,26 @@ bool MyModel::DrawGLScene(void)
 				glVertex3f(Background[i].x, Background[i].y, Background[i].z);
 			}
 			glEnd();
-			//if ((int)(Full_elapsed * 10) % 2 == 0) {
-				hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], plx, -0.4, (int)(Full_elapsed * 10));
-			//}
+			movement = hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], keys[VK_KEY_W], plx, -0.4, (int)(Full_elapsed * 10));
+			//if (movement = ) state = WIN_SCREEN;			// TODO Inserire valore massimo di spostamento
 			hero.drawGL(Full_elapsed);
 			//fireball.drawFireball(Full_elapsed);
 			//enemy.moveX(Full_elapsed);
 			for (int i = 0; i < numEnemies; i++) {
-				enemy[i].drawGL(Full_elapsed);
+				//enemy[i].moveX(movement);
+				enemy[i].drawGL(Full_elapsed, movement);
 			}
 			for (int i = 0; i < numPlatforms; i++) {
-				platforms[i].drawGL();
+				platforms[i].drawGL(movement);
 			}
 			if (hero.getAttacking()) {
-				colliderFireballsEnemies();
+				colliderFireballsEnemies(movement);
 			}
+			colliderHeroEnemies(movement);
+			break;
 
+		case LOSE_SCREEN:
+			startScreen.drawGL();
 			break;
 	}
 	/*//  Texture for the hero, change every 1/6 sec.
@@ -357,7 +357,7 @@ void MyModel::glPrint(const char *fmt, ...)					// Custom GL "Print" Routine
 	glPopAttrib();										// Pops The Display List Bits
 }
 
-void MyModel::colliderFireballsEnemies() {
+void MyModel::colliderFireballsEnemies(double movement) {
 	std::vector<Fireball> f = hero.getFireball();
 	for (int i = 0; i < f.size(); i++) {
 		for (int j = 0; j < enemy.size(); j++) {
@@ -367,20 +367,44 @@ void MyModel::colliderFireballsEnemies() {
 					if (enemy[j].getPx() != 0) {
 						posx = enemy[j].getPx();
 					}
-					if (f[i].getCenter().x - (f[i].getWidth() / 2) <= enemy[j].getCenter().x + posx + (enemy[j].getWidth() / 2) &&		// Il bordo sinistro della fireball deve essere <= del bordo destro dell'enemy
-						f[i].getCenter().x + (f[i].getWidth() / 2) >= enemy[j].getCenter().x + posx - (enemy[j].getWidth() / 2)) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
+					if (f[i].getCenter().x - (f[i].getWidth() / 2) <= enemy[j].getCenter().x + posx + movement + (enemy[j].getWidth() / 2) &&		// Il bordo sinistro della fireball deve essere <= del bordo destro dell'enemy
+						f[i].getCenter().x + (f[i].getWidth() / 2) >= enemy[j].getCenter().x + posx + movement - (enemy[j].getWidth() / 2)) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
 						f[i].setIsVisible(false);
 						hero.setFireball(f);
 						enemy[j].setDead(true);
 						enemy[j].setIsVisible(false);
 						
 						//TODO Sostituire con esplosione
-						//p = Platform(Coordinates(enemy[j].getCenter().x + posx, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
+						//p = Platform(Coordinates(enemy[j].getCenter().x + posx + movement, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
 						//p.drawGL();
 
 						//f.erase(f.begin() + i);
 						//enemy.erase(enemy.begin() + i);
 					}
+				}
+			}
+		}
+	}
+}
+
+void MyModel::colliderHeroEnemies(double movement) {
+	for (int j = 0; j < enemy.size(); j++) {
+		if (enemy[j].getIsVisible()) {
+			if (hero.center.y - (hero.getHeigth() / 2) <= enemy[j].getCenter().y + (enemy[j].getHeigth() / 2) &&		// Il bordo inferiore della fireball deve essere <= del bordo superiore dell'enemy
+				hero.center.y + (hero.getHeigth() / 2) >= enemy[j].getCenter().y - (enemy[j].getHeigth() / 2)) {		// Il bordo superiore della fireball deve essere >= del bordo inferiore dell'enemy
+				if (enemy[j].getPx() != 0) {
+					posx = enemy[j].getPx();
+				}
+				if (hero.center.x - (hero.getWidth() / 2) <= enemy[j].getCenter().x + posx + movement + (enemy[j].getWidth() / 2) &&		// Il bordo sinistro della fireball deve essere <= del bordo destro dell'enemy
+					hero.center.x + (hero.getWidth() / 2) >= enemy[j].getCenter().x + posx + movement - (enemy[j].getWidth() / 2)) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
+					//hero.setIsVisible(false);
+					hero.setState(DIE);
+					enemy[j].setDead(true);
+					//enemy[j].setIsVisible(false);
+
+					//TODO Sostituire con esplosione
+					//p = Platform(Coordinates(enemy[j].getCenter().x + posx + movement, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
+					//p.drawGL();
 				}
 			}
 		}

@@ -1,10 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <time.h>
 
 #include "Coordinates.h"
 #include "Fireball.h"
 #include "Vertex.h"
+
+#define PI 3.141592654
 
 // Stati di hero 
 const int IDLE = 0;
@@ -14,6 +17,8 @@ const int JUMP = 3;
 const int HURT = 4;
 const int DIE = 5;
 
+const clock_t notrunning = (clock_t)(-1);
+
 class Hero {
 private:
 	std::vector<Vertex> vector;
@@ -22,12 +27,15 @@ private:
 	GLuint heroTexture[30];
 
 	float incrx = 0.005;
-	float incry = 0.01;
+	float incry = 0.2;
+	float movy = 0;
 	bool left = false;				// hero watching left?
 	bool attacking = false;
-	int state= IDLE;				// State of the hero
+	int state = IDLE;				// State of the hero
 	int fireballIndex = 0;
 	int numFireball = 0;
+	double movement;			// Movimento dello sfondo e degli elementi in base alla posizione dell'eroe
+	bool dead = false;
 
 	float width = 0.2;
 	float height = 0.2;
@@ -47,7 +55,6 @@ public:
 
 	Hero() {}
 	Hero(Coordinates center, float z) {
-		//center = Coordinates(-0.5, 0.5);
 		this->center = center;
 		this->z = z;
 		fireball.clear();
@@ -62,12 +69,32 @@ public:
 		reverseVector.push_back(Vertex(center.x + width / 2, center.y + height / 2, z, 0, 1));	//alto sx
 		reverseVector.push_back(Vertex(center.x - width / 2, center.y + height / 2, z, 1, 1));	//alto dx
 
-		//fireball = NULL;
+		movement = 0;
 
 		this->loadGLTexture();
 	}
 
 	~Hero() {}
+
+	float getHeigth() {
+		return this->height;
+	}
+
+	float getWidth() {
+		return this->width;
+	}
+
+	void setState(int s) {
+		this->state = s;
+	}
+
+	int getState() {
+		return state;
+	}
+
+	bool getDead() {
+		return dead;
+	}
 
 	std::vector<Fireball> getFireball() {
 		return fireball;
@@ -83,7 +110,8 @@ public:
 
 	bool loadGLTexture();
 
-	void moveX(float incr);
+	double moveX();
+	void moveY();
 	void setXPosition(float xPos);
 
 	bool drawGL(double Full_elapsed);
@@ -91,7 +119,7 @@ public:
 	void calcGravity(float);
 	float squareDistance(Vertex other);
 
-	void userMove(int leftKey, int rightKey, int spaceKey, double limitWindow, float earthY, int dsElapsed);
+	double userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, int dsElapsed);
 	void userChangePowerAngle(int minusPowerKey, int plusPowerKey, int minusAngleKey, int plusAngleKey);
 
 	boolean userFireCommand(int keyFire);
@@ -103,4 +131,11 @@ public:
 	int getPowerFire() { return powerFire; }
 	int getAngleFire() { return angleFire; }
 
+	inline void checkTimerReset(clock_t &start)
+	{
+		if (start != notrunning) {
+			if (((clock() - start) / CLOCKS_PER_SEC) >= 1.5)
+				start = notrunning;
+		}
+	}
 };

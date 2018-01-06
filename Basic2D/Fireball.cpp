@@ -125,10 +125,6 @@ bool Fireball::drawFireball(double Full_elapsed) {
 Vertex Fireball::moveFireball() {
 	if (!isVisible) return Vertex();
 
-	//Incremento delle posizioni
-	center.x += incrX;
-	//center.y += incrY;
-
 	for (int i = 0; i < 4; i++) {
 		if (left) {
 			reverseVector[i].x -= incrX;
@@ -136,6 +132,13 @@ Vertex Fireball::moveFireball() {
 		else {
 			vector[i].x += incrX;
 		}
+	}
+
+	if (left) {
+		center.x -= incrX;
+	}
+	else {
+		center.x += incrX;
 	}
 
 	//Disegno direction seguita
