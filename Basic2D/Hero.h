@@ -31,11 +31,12 @@ private:
 	float movy = 0;
 	bool left = false;				// hero watching left?
 	bool attacking = false;
+	bool jumping = false;
+	bool dead = false;
 	int state = IDLE;				// State of the hero
 	int fireballIndex = 0;
 	int numFireball = 0;
 	double movement;			// Movimento dello sfondo e degli elementi in base alla posizione dell'eroe
-	bool dead = false;
 
 	float width = 0.2;
 	float height = 0.2;
@@ -48,6 +49,7 @@ private:
 	int health = 100;		// Indicatore di punti vita
 
 	std::vector<Fireball> fireball;
+	double jumpStart = 0;
 
 public:
 
@@ -111,7 +113,7 @@ public:
 	bool loadGLTexture();
 
 	double moveX();
-	void moveY();
+	void moveY(double Full_elapsed);
 	void setXPosition(float xPos);
 
 	bool drawGL(double Full_elapsed);
@@ -119,7 +121,7 @@ public:
 	void calcGravity(float);
 	float squareDistance(Vertex other);
 
-	double userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, int dsElapsed);
+	double userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, double Full_elapsed);
 	void userChangePowerAngle(int minusPowerKey, int plusPowerKey, int minusAngleKey, int plusAngleKey);
 
 	boolean userFireCommand(int keyFire);
@@ -131,11 +133,7 @@ public:
 	int getPowerFire() { return powerFire; }
 	int getAngleFire() { return angleFire; }
 
-	inline void checkTimerReset(clock_t &start)
-	{
-		if (start != notrunning) {
-			if (((clock() - start) / CLOCKS_PER_SEC) >= 1.5)
-				start = notrunning;
-		}
+	inline void checkTimerReset(clock_t &start, int movy)	{
+		if (start != notrunning && movy == 0) start = notrunning;
 	}
 };

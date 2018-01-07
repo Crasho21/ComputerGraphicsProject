@@ -96,8 +96,13 @@ double Hero::moveX() {
 	return movement;
 }
 
-void Hero::moveY() {
+void Hero::moveY(double Full_elapsed) {
 	state = JUMP;
+	jumpStart = Full_elapsed;
+	jumping = true;
+	/*if (start == notrunning) {
+		start = clock();
+	}*/
 	//movy += incry;
 	/*for (int i = 0; i < 4; i++) {
 		vector[i].y += incry;
@@ -125,8 +130,6 @@ bool Hero::drawGL(double Full_elapsed) {
 	int heroTexF;
 	int id = 0;
 	movy = 0;
-	clock_t start = notrunning;
-	checkTimerReset(start);
 	double elapsed, omega;
 	Coordinates c;
 	switch (state){
@@ -163,11 +166,15 @@ bool Hero::drawGL(double Full_elapsed) {
 			//  TIMING - start
 			/*if (start == notrunning) {
 				start = clock();
-			}
+			}*/
 			// elapsed time in seconds from the last draw
-			elapsed = (double)start / (double)CLOCKS_PER_SEC;
+			elapsed = Full_elapsed - jumpStart;
+			if (jumping) {
+				elapsed += 0.00001;
+				jumping = false;
+			}
 			omega = PI / 2.0;
-			movy = -0.25 * cos(omega * elapsed);*/
+			movy = 0.25 * sin(omega * elapsed);
 			break;
 		case HURT:
 			break;
@@ -180,8 +187,9 @@ bool Hero::drawGL(double Full_elapsed) {
 	// Hero geometrical trasformations
 	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
 	glLoadIdentity();						// Reset The View
-	if (movy > 0) movy = 0;
-	glTranslatef(0.0, -movy, 0);
+	if (movy < 0) movy = 0;
+	//checkTimerReset(start, movy);
+	glTranslatef(0.0, movy, 0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_ALPHA_TEST);
@@ -231,7 +239,7 @@ bool Hero::drawGL(double Full_elapsed) {
 //	}
 //}
 
-double Hero::userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, int dsElapsed) {
+double Hero::userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, double Full_elapsed) {
 	if (state == DIE) return false;
 	if (vector[0].y > earthY) {	//Se sto volando
 		/*for (int i = 0; i < 4; i++) {
@@ -258,13 +266,13 @@ double Hero::userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, doub
 		left = true;
 		movement = moveX();
 	}
-	if (dsElapsed % 1 == 0 && spaceKey) {
+	if ((int)(Full_elapsed * 10) % 1 == 0 && spaceKey) {
 		state = ATTACK;
 		attacking = true;
 		Sleep(100);
 	}
 	if (jumpKey) {
-		moveY();
+		moveY(Full_elapsed);
 	}
 
 	if (vector[1].x < -limitWindow) {	//sbatto a sx

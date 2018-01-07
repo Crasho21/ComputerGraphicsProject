@@ -148,7 +148,7 @@ bool MyModel::DrawGLScene(void)
 				glVertex3f(Background[i].x, Background[i].y, Background[i].z);
 			}
 			glEnd();
-			movement = hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], keys[VK_KEY_W], plx, -0.4, (int)(Full_elapsed * 10));
+			movement = hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], keys[VK_KEY_W], plx, -0.4, Full_elapsed);
 			//if (movement = ) state = WIN_SCREEN;			// TODO Inserire valore massimo di spostamento
 			hero.drawGL(Full_elapsed);
 			//fireball.drawFireball(Full_elapsed);
