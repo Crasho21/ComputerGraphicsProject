@@ -37,6 +37,18 @@ public:
 	}
 	~Platform() {}
 
+	Coordinates getCenter() {
+		return center;
+	}
+
+	float getHeigth() {
+		return this->height;
+	}
+
+	float getWidth() {
+		return this->width;
+	}
+
 	bool loadGLTexture();
 	bool drawGL(double movement);
 

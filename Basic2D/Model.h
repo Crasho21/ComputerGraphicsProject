@@ -124,6 +124,7 @@ public:
 	void glPrint(const char *fmt, ...);			// Custom GL "Print" Routine
 	void colliderFireballsEnemies(double movement);
 	void colliderHeroEnemies(double movement);
+	void colliderHeroPlatforms(double movement);
 
 private:
 	bool LoadGLTextures(void);

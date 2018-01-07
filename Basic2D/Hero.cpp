@@ -50,17 +50,7 @@ bool Hero::loadGLTexture() {
 }
 
 double Hero::moveX() {
-	state = MOVE;
-	for (int i = 0; i < 4; i++) {
-		if (left) {
-			vector[i].x -= incrx;
-			reverseVector[i].x -= incrx;
-		}
-		else {
-			vector[i].x += incrx;
-			reverseVector[i].x += incrx;
-		}
-	}
+	if(!(center.y > -0.3)) state = MOVE;
 	if (left) {
 		center.x -= incrx;
 	}
@@ -70,36 +60,37 @@ double Hero::moveX() {
 	if (center.x > 0.5) {
 		movement -= 0.01;
 		center.x = 0.5;
-		vector[0].x = center.x - width / 2;
-		vector[1].x = center.x + width / 2;
-		vector[2].x = center.x + width / 2;
-		vector[3].x = center.x - width / 2;
-		reverseVector[0].x = center.x - width / 2;
-		reverseVector[1].x = center.x + width / 2;
-		reverseVector[2].x = center.x + width / 2;
-		reverseVector[3].x = center.x - width / 2;
 	}
 	else if (center.x < -0.8) {
 		movement += 0.01;
 		center.x = -0.8;
-		vector[0].x = center.x - width / 2;
-		vector[1].x = center.x + width / 2;
-		vector[2].x = center.x + width / 2;
-		vector[3].x = center.x - width / 2;
-		reverseVector[0].x = center.x - width / 2;
-		reverseVector[1].x = center.x + width / 2;
-		reverseVector[2].x = center.x + width / 2;
-		reverseVector[3].x = center.x - width / 2;
 	}
+	recalculateVectors();
 	if (movement > 0) movement = 0;
 	//else if (movement < ) movement = ;		// TODO Inserire valore massimo di spostamento
 	return movement;
 }
 
-void Hero::moveY(double Full_elapsed) {
-	state = JUMP;
+void Hero::moveY() {
+	state = FLY;
+	if (up) {
+		center.y += incrx;
+	}
+	else {
+		center.y -= incrx;
+	}
+	if (center.y < -0.3) {
+		center.y = -0.3;
+		state = IDLE;
+	}
+	else if (center.y > 0.5) {
+		center.y = 0.5;
+	}
+	recalculateVectors();
+	/*state = JUMP;
 	jumpStart = Full_elapsed;
 	jumping = true;
+	falling = false;*/
 	/*if (start == notrunning) {
 		start = clock();
 	}*/
@@ -130,7 +121,7 @@ bool Hero::drawGL(double Full_elapsed) {
 	int heroTexF;
 	int id = 0;
 	movy = 0;
-	double elapsed, omega;
+	double elapsed, omega, newmovy;
 	Coordinates c;
 	switch (state){
 		case IDLE:
@@ -160,21 +151,9 @@ bool Hero::drawGL(double Full_elapsed) {
 				fireball.erase(fireball.begin());
 			}
 			break;
-		case JUMP:
+		case FLY:
 			heroTexF = 25 + ((int((Full_elapsed * 2))) % 2);
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
-			//  TIMING - start
-			/*if (start == notrunning) {
-				start = clock();
-			}*/
-			// elapsed time in seconds from the last draw
-			elapsed = Full_elapsed - jumpStart;
-			if (jumping) {
-				elapsed += 0.00001;
-				jumping = false;
-			}
-			omega = PI / 2.0;
-			movy = 0.25 * sin(omega * elapsed);
 			break;
 		case HURT:
 			break;
@@ -187,14 +166,13 @@ bool Hero::drawGL(double Full_elapsed) {
 	// Hero geometrical trasformations
 	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
 	glLoadIdentity();						// Reset The View
-	if (movy < 0) movy = 0;
-	//checkTimerReset(start, movy);
-	glTranslatef(0.0, movy, 0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0);
 
+	// Ricalcolo i vettori per controllare che non sforino le dimensioni dello schermo (asse x)
+	recalculateVectors();
 	glBegin(GL_QUADS);
 	for (int i = 0; i < 4; i++) {
 		if (left) {
@@ -217,7 +195,8 @@ bool Hero::drawGL(double Full_elapsed) {
 		}
 	}
 
-	if (state != DIE && movy == 0) state = IDLE;
+	if (state != DIE && center.y >-0.3) state = FLY;
+	else if (state != DIE) state = IDLE;
 	if (heroTexF == 24) dead = true;
 
 	return true;
@@ -239,25 +218,8 @@ bool Hero::drawGL(double Full_elapsed) {
 //	}
 //}
 
-double Hero::userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, double Full_elapsed) {
+double Hero::userMove(int leftKey, int rightKey, int spaceKey, int upKey, int downKey, float earthY, double Full_elapsed) {
 	if (state == DIE) return false;
-	if (vector[0].y > earthY) {	//Se sto volando
-		/*for (int i = 0; i < 4; i++) {
-			vector[i].y -= incry;
-			reverseVector[i].y -= incry;
-		}*/
-		center.y -= incry;
-	}
-	else if ((vector[1].y - earthY)>-0.1) {	//Se il dislivello non è eccessivo
-		for (int i = 0; i < 2; i++) {
-			vector[i].y = earthY;
-			vector[i + 2].y = earthY + height;
-			reverseVector[i].y = earthY;
-			reverseVector[i + 2].y = earthY + height;
-		}
-		center.y = earthY + height / 2;
-	}
-
 	if (rightKey) {
 		left = false;
 		movement = moveX();
@@ -271,24 +233,13 @@ double Hero::userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, doub
 		attacking = true;
 		Sleep(100);
 	}
-	if (jumpKey) {
-		moveY(Full_elapsed);
+	if (upKey) {
+		up = true;
+		moveY();
 	}
-
-	if (vector[1].x < -limitWindow) {	//sbatto a sx
-		vector[0].x = -limitWindow + width;
-		vector[1].x = -limitWindow;
-		vector[2].x = -limitWindow;
-		vector[3].x = -limitWindow + width;
-		center.x = -limitWindow + width / 2;
-	}
-
-	if (vector[0].x > limitWindow) {	//sbatto a dx
-		vector[0].x = limitWindow;
-		vector[1].x = limitWindow - width;
-		vector[2].x = limitWindow - width;
-		vector[3].x = limitWindow;
-		center.x = limitWindow - width / 2;
+	else if (downKey) {
+		up = false;
+		moveY();
 	}
 	return movement;
 }

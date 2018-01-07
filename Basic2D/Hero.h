@@ -13,7 +13,7 @@
 const int IDLE = 0;
 const int MOVE = 1;
 const int ATTACK = 2;
-const int JUMP = 3;
+const int FLY = 3;
 const int HURT = 4;
 const int DIE = 5;
 
@@ -27,11 +27,12 @@ private:
 	GLuint heroTexture[30];
 
 	float incrx = 0.005;
-	float incry = 0.2;
+	float incry = 0.005;
 	float movy = 0;
 	bool left = false;				// hero watching left?
+	bool up = false;
 	bool attacking = false;
-	bool jumping = false;
+	bool falling = false;
 	bool dead = false;
 	int state = IDLE;				// State of the hero
 	int fireballIndex = 0;
@@ -113,7 +114,7 @@ public:
 	bool loadGLTexture();
 
 	double moveX();
-	void moveY(double Full_elapsed);
+	void moveY();
 	void setXPosition(float xPos);
 
 	bool drawGL(double Full_elapsed);
@@ -121,7 +122,7 @@ public:
 	void calcGravity(float);
 	float squareDistance(Vertex other);
 
-	double userMove(int leftKey, int rightKey, int spaceKey, int jumpKey, double limitWindow, float earthY, double Full_elapsed);
+	double userMove(int leftKey, int rightKey, int spaceKey, int upKey, int downKey, float earthY, double Full_elapsed);
 	void userChangePowerAngle(int minusPowerKey, int plusPowerKey, int minusAngleKey, int plusAngleKey);
 
 	boolean userFireCommand(int keyFire);
@@ -133,7 +134,25 @@ public:
 	int getPowerFire() { return powerFire; }
 	int getAngleFire() { return angleFire; }
 
-	inline void checkTimerReset(clock_t &start, int movy)	{
-		if (start != notrunning && movy == 0) start = notrunning;
+	inline void recalculateVectors() {
+		/*if (center.y < -0.3) center.y = -0.3;
+		else if (center.y > 0.9) center.y = 0.9;*/
+		vector[0].x = center.x - width / 2;
+		vector[0].y = center.y - height / 2;
+		vector[1].x = center.x + width / 2;
+		vector[1].y = center.y - height / 2;
+		vector[2].x = center.x + width / 2;
+		vector[2].y = center.y + height / 2;
+		vector[3].x = center.x - width / 2;
+		vector[3].y = center.y + height / 2;
+		reverseVector[0].x = center.x - width / 2;
+		reverseVector[0].y = center.y - height / 2;
+		reverseVector[1].x = center.x + width / 2;
+		reverseVector[1].y = center.y - height / 2;
+		reverseVector[2].x = center.x + width / 2;
+		reverseVector[2].y = center.y + height / 2;
+		reverseVector[3].x = center.x - width / 2;
+		reverseVector[3].y = center.y + height / 2;
 	}
+
 };
