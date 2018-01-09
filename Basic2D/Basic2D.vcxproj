@@ -70,7 +70,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Platform.cpp" />
-    <ClCompile Include="StartScreen.cpp" />
+    <ClCompile Include="Screen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audiere.h" />
@@ -81,7 +81,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="SOIL.h" />
-    <ClInclude Include="StartScreen.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>

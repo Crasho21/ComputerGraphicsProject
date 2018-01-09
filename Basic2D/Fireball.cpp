@@ -122,8 +122,8 @@ bool Fireball::drawFireball(double Full_elapsed) {
 	return false;
 }
 
-Vertex Fireball::moveFireball() {
-	if (!isVisible) return Vertex();
+void Fireball::moveFireball() {
+	if (!isVisible) center.y = -1;
 
 	for (int i = 0; i < 4; i++) {
 		if (left) {
@@ -140,9 +140,4 @@ Vertex Fireball::moveFireball() {
 	else {
 		center.x += incrX;
 	}
-
-	//Disegno direction seguita
-	//direction.push_back(Vertex(center.x, center.y, z));
-
-	return Vertex(center.x, center.y, 0);
 }

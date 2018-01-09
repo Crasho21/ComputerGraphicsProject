@@ -5,14 +5,17 @@
 
 #include "SOIL.h"
 
-#include "StartScreen.h"
+#include "Screen.h"
 
-StartScreen::~StartScreen() {}
+Screen::~Screen() {}
 
 
-bool StartScreen::loadGLTexture() {
+bool Screen::loadGLTexture() {
 	/* load an image file directly as a new OpenGL texture */
-	texture = SOIL_load_OGL_texture("../Data/Background/background.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	texture[START] = SOIL_load_OGL_texture("../Data/Background/DragonDefender.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	texture[WIN] = SOIL_load_OGL_texture("../Data/Background/DragonDefenderWin.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	texture[LOSE] = SOIL_load_OGL_texture("../Data/Background/DragonDefenderGameOver.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	texture[HELP] = SOIL_load_OGL_texture("../Data/Background/DragonDefenderCommands.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 
 	// Typical Texture Generation Using Data From The Bitmap
 	//glBindTexture(GL_TEXTURE_2D, texture);
@@ -23,7 +26,7 @@ bool StartScreen::loadGLTexture() {
 }
 
 
-bool StartScreen::drawGL(void) {
+bool Screen::drawGL(int id) {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 
 	glEnable(GL_TEXTURE_2D);
@@ -33,11 +36,10 @@ bool StartScreen::drawGL(void) {
 
 	glLoadIdentity();
 
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, texture[id]);
 
 	glBegin(GL_QUADS);
 	for (int i = 0; i < 4; i++) {
-		//printf("%s\n%s\n", vectVertex[i].u, vectVertex[i].v);
 		glTexCoord2f(vectVertex[i].u, vectVertex[i].v);
 		glVertex3f(vectVertex[i].x, vectVertex[i].y, vectVertex[i].z);
 	}

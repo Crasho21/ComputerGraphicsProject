@@ -300,12 +300,14 @@ LRESULT CALLBACK WndProc(	HWND	hWnd,			// Handle For This Window
 		}
 
 		case WM_KEYUP:								// Has A Key Been Released?
-		{	Data.keys[wParam] = FALSE;	// If So, Mark It As FALSE
+		{	Data.keysPrevious[wParam] = Data.keys[wParam];
+			Data.keys[wParam] = FALSE;	// If So, Mark It As FALSE
 			return 0;								// Jump Back
 		}
 
 		case WM_SIZE:								// Resize The OpenGL Window
-		{	Data.ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));  // LoWord=Width, HiWord=Height
+		{	Data.keysPrevious[wParam] = Data.keys[wParam]; 
+			Data.ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));  // LoWord=Width, HiWord=Height
 			return 0;								// Jump Back
 		}
 	}
@@ -338,7 +340,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
   Data.fullscreen=false;  // removed the boring request...
 
 	// Create Our OpenGL Window
-	if (!CreateGLWindow("Basic 2D game skeleton",1280,720,16,Data.fullscreen))
+	if (!CreateGLWindow("Dragon Defender",1280,720,16,Data.fullscreen))
 	{
 		return 0;									// Quit If Window Was Not Created
 	}
@@ -354,11 +356,13 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
   }
   stream->setRepeat(true);
   stream->setVolume(0.5f); // 50% volume
-  stream->play();
+  //stream->play();
 
-  OutputStreamPtr explosion(OpenSound(device, "../Data/explosion.wav", false));
-  OutputStreamPtr bell(OpenSound(device, "../Data/bell.wav", false));
-  OutputStreamPtr stupid(OpenSound(device, "../Data/stupid.wav", false));
+  OutputStreamPtr missionStart(OpenSound(device, "../Data/Audio/MissionStart.mp3", false));
+  OutputStreamPtr missionComplete(OpenSound(device, "../Data/Audio/MissionComplete.mp3", false));
+  OutputStreamPtr flameShot(OpenSound(device, "../Data/Audio/FlameShot.mp3", false));
+  OutputStreamPtr heroDeathSound(OpenSound(device, "../Data/Audio/PacManGameOver.mp3", false));
+  OutputStreamPtr stupid(OpenSound(device, "../Data/Audio/HomerDoh.mp3", false));
   //  AUDIO - end
 
   //ShowCursor(FALSE);
@@ -380,7 +384,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 		else										// If There Are No Messages
 		{
 			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
-			if ((Data.active && !Data.DrawGLScene()) || Data.keys[VK_ESCAPE])	// Active?  Was There A Quit Received?
+			if ((Data.active && !Data.DrawGLScene(stream, missionStart, missionComplete, heroDeathSound, stupid)) || Data.keys[VK_ESCAPE])	// Active?  Was There A Quit Received?
 			{
 				done=TRUE;							// ESC or DrawGLScene Signalled A Quit
 			}
@@ -402,17 +406,17 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 					return 0;						// Quit If Window Was Not Created
 				}
 			}*/
-    if (Data.keys[VK_F2])						// Is F2 Being Pressed?
+    if (Data.keys[VK_SPACE])						// Is F2 Being Pressed?
 			{
 				Data.keys[VK_F2]=FALSE;					// If So Make Key FALSE
-        if( explosion->isPlaying() ) explosion->reset();
-        else explosion->play();
+        if( flameShot->isPlaying() ) flameShot->reset();
+        else flameShot->play();
 			}
     if (Data.keys[VK_F3])						// Is F3 Being Pressed?
 			{
 				Data.keys[VK_F3]=FALSE;					// If So Make Key FALSE
-        if( bell->isPlaying() ) bell->reset();
-        else bell->play();
+        if( heroDeathSound->isPlaying() ) heroDeathSound->reset();
+        else heroDeathSound->play();
 			}
 
     if (Data.keys[VK_F4])						// Is F4 Being Pressed?

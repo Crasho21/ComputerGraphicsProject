@@ -18,11 +18,12 @@
 #include <time.h>
 #include <math.h>
 
+#include "audiere.h"
 #include "Enemy.h"
 #include "Fireball.h"
 #include "Hero.h"
 #include "Platform.h"
-#include "StartScreen.h"
+#include "Screen.h"
 #include "Vertex.h"
 
 #define PI 3.141592654
@@ -32,12 +33,14 @@ const int VK_KEY_W = 0x57;
 const int VK_KEY_A = 0x41;
 const int VK_KEY_S = 0x53;
 const int VK_KEY_D = 0x44;
+const int VK_KEY_H = 0x48;
 
 // Stati del gioco 
 const int START_SCREEN = 0;
 const int PLAY_SCREEN = 1;
 const int WIN_SCREEN = 2;
 const int LOSE_SCREEN = 3;
+const int HELP_SCREEN = 4;
 
 class MyModel {
 public:
@@ -49,6 +52,7 @@ public:
 	HINSTANCE	hInstance;		// Holds The Instance Of The Application
 
 	bool	keys[256];			// Array Used For The Keyboard Routine
+	bool	keysPrevious[256];			// Array Used For The Previous Keyboard Routine
 	bool	active;		      // Window Active Flag Set To TRUE By Default
 	bool	fullscreen;	    // Fullscreen Flag 
 
@@ -62,7 +66,7 @@ private:
 	double frameTime;     // for fps computation
 	double fps;
 
-	StartScreen startScreen;
+	Screen screen;
 
 	Fireball fireball;
 
@@ -72,7 +76,6 @@ private:
 	std::vector<Vertex> fire;         // floating fire
 	std::vector<Vertex> bat;          // floating bat
 	std::vector<Vertex> rbat;
-	std::vector<Vertex> temp;
 	Hero hero;
 	std::vector<Enemy> enemy;
 	Enemy e;
@@ -88,13 +91,14 @@ private:
 	GLuint	background[28];			// Storage For 28 Textures!
 	GLuint	enemies[100];
 	GLuint	base;				// Base Display List For The Font Set
+
 public:
 	//  methods
 	MyModel() : hDC(NULL), hRC(NULL), hWnd(NULL), active(true), fullscreen(true), frames(0), fps(0) {
 		Background.clear();
 		Background.push_back(Vertex(-1, -1, -5, 0, 0));
-		Background.push_back(Vertex(1, -1, -5, 0.5, 0));
-		Background.push_back(Vertex(1, 1, -5, 0.5, 1));
+		Background.push_back(Vertex(9, -1, -5, 1, 0));
+		Background.push_back(Vertex(9, 1, -5, 1, 1));
 		Background.push_back(Vertex(-1, 1, -5, 0, 1));
 		movement = 0;
 		// Bat textures
@@ -118,11 +122,11 @@ public:
 	~MyModel() {
 		this->KillFont();
 	}
-	bool DrawGLScene(void);
+	bool DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStreamPtr missionStart, audiere::OutputStreamPtr missionComplete, audiere::OutputStreamPtr heroDeathSound, audiere::OutputStreamPtr enemyDeathSound);
 	bool InitGL(void);
 	void ReSizeGLScene(int width, int height);
 	void glPrint(const char *fmt, ...);			// Custom GL "Print" Routine
-	void colliderFireballsEnemies(double movement);
+	void colliderFireballsEnemies(double movement, audiere::OutputStreamPtr enemyDeathSound);
 	void colliderHeroEnemies(double movement);
 	void colliderHeroPlatforms(double movement);
 

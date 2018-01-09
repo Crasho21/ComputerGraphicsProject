@@ -36,19 +36,35 @@ bool MyModel::InitGL(void)
 	gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
 
 	// Initializations
-	startScreen = StartScreen(plx, ply);
-	hero = Hero(Coordinates(-0.8, -0.3), -4);
+	// Screen per gestire i vari sfondi
+	screen = Screen(plx, ply);
+	// Hero
+	hero = Hero(Coordinates(-0.8, -0.3), -3);
 	e = Enemy(Coordinates(0.5, -0.3), -4, BAT);
 	enemy.push_back(e);
 	numEnemies++;
-	temp = bat;
+	// Enemies
 	e = Enemy(Coordinates(0.5, 0.25), -4, WALKING_MONSTER);
 	enemy.push_back(e);
 	numEnemies++;
+	e = Enemy(Coordinates(1.5, -0.15), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(2.5, -0.3), -4, WALKING_MONSTER);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(3.5, 0.45), -4, WALKING_MONSTER);
+	enemy.push_back(e);
+	numEnemies++;
+	// Piattaforma su cui poggia il giocatore
 	p = Platform(Coordinates(0.0, -0.59), 2, 0.4, -4, 0, 0);
 	platforms.push_back(p);
 	numPlatforms++;
-	p = Platform(Coordinates(0.5, 0.1), 0.5, 0.1, -4, 3, 1);
+	// Piattafrme fluttuanti
+	p = Platform(Coordinates(0.5, 0.1), 0.5, 0.1, -4, 7, 1);
+	platforms.push_back(p);
+	numPlatforms++;
+	p = Platform(Coordinates(3.5, 0.3), 0.5, 0.1, -4, 7, 1);
 	platforms.push_back(p);
 	numPlatforms++;
 
@@ -112,7 +128,7 @@ bool MyModel::LoadGLTextures(void)
 	return true;										// Return Success
 }
 
-bool MyModel::DrawGLScene(void)
+bool MyModel::DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStreamPtr missionStart, audiere::OutputStreamPtr missionComplete, audiere::OutputStreamPtr heroDeathSound, audiere::OutputStreamPtr enemyDeathSound)
 {
 	//  TIMING - start
 	clock_t t = clock();
@@ -133,12 +149,20 @@ bool MyModel::DrawGLScene(void)
 
 	switch (state) {
 		case START_SCREEN:
-			if (keys[VK_RETURN]) state = PLAY_SCREEN;
-			startScreen.drawGL();
+			if (keys[VK_RETURN]) {
+				missionStart->play();
+				state = PLAY_SCREEN;
+			}
+			else if (keys[VK_KEY_H]) state = HELP_SCREEN;
+			screen.drawGL(START);
 			break;
 
 		case PLAY_SCREEN:
-			if (hero.getDead()) state = LOSE_SCREEN;
+			if (!stream->isPlaying()) stream->play();
+			if (hero.getDead()) {
+				heroDeathSound->play();
+				state = LOSE_SCREEN;
+			}
 			glBindTexture(GL_TEXTURE_2D, background[0]);
 			glTranslatef((float)movement, 0, 0);
 			//  Background
@@ -149,26 +173,40 @@ bool MyModel::DrawGLScene(void)
 			}
 			glEnd();
 			movement = hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], keys[VK_KEY_W], keys[VK_KEY_S], -0.4, Full_elapsed);
-			//if (movement = ) state = WIN_SCREEN;			// TODO Inserire valore massimo di spostamento
+			if (movement == -8) {
+				missionComplete->play();
+				state = WIN_SCREEN;
+			}
 			hero.drawGL(Full_elapsed);
-			//fireball.drawFireball(Full_elapsed);
-			//enemy.moveX(Full_elapsed);
 			for (int i = 0; i < numEnemies; i++) {
-				//enemy[i].moveX(movement);
 				enemy[i].drawGL(Full_elapsed, movement);
 			}
 			for (int i = 0; i < numPlatforms; i++) {
 				platforms[i].drawGL(movement);
 			}
 			if (hero.getAttacking()) {
-				colliderFireballsEnemies(movement);
+				colliderFireballsEnemies(movement, enemyDeathSound);
 			}
 			colliderHeroEnemies(movement);
 			colliderHeroPlatforms(movement);
 			break;
 
+		case WIN_SCREEN:
+			if (stream->isPlaying()) stream->reset();
+			screen.drawGL(WIN);
+			break;
+
 		case LOSE_SCREEN:
-			startScreen.drawGL();
+			if (stream->isPlaying()) stream->reset();
+			screen.drawGL(LOSE);
+			break;
+
+		case HELP_SCREEN:
+			if (keys[VK_RETURN]) {
+				missionStart->play();
+				state = PLAY_SCREEN;
+			}
+			screen.drawGL(HELP);
 			break;
 	}
 	/*//  Texture for the hero, change every 1/6 sec.
@@ -358,7 +396,7 @@ void MyModel::glPrint(const char *fmt, ...)					// Custom GL "Print" Routine
 	glPopAttrib();										// Pops The Display List Bits
 }
 
-void MyModel::colliderFireballsEnemies(double movement) {
+void MyModel::colliderFireballsEnemies(double movement, audiere::OutputStreamPtr enemyDeathSound) {
 	std::vector<Fireball> f = hero.getFireball();
 	for (int i = 0; i < f.size(); i++) {
 		for (int j = 0; j < enemy.size(); j++) {
@@ -374,6 +412,7 @@ void MyModel::colliderFireballsEnemies(double movement) {
 						hero.setFireball(f);
 						enemy[j].setDead(true);
 						enemy[j].setIsVisible(false);
+						enemyDeathSound->play();
 						
 						//TODO Sostituire con esplosione
 						//p = Platform(Coordinates(enemy[j].getCenter().x + posx + movement, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
@@ -413,27 +452,28 @@ void MyModel::colliderHeroEnemies(double movement) {
 }
 
 void MyModel::colliderHeroPlatforms(double movement) {
+	double epsilon = 0.005;
 	for (int j = 1; j < platforms.size(); j++) {
 		if (hero.center.y - (hero.getHeigth() / 2) <= platforms[j].getCenter().y + (platforms[j].getHeigth() / 2) &&					// Il bordo inferiore del hero deve essere <= del bordo superiore della platform
 			hero.center.y + (hero.getHeigth() / 2) >= platforms[j].getCenter().y - (platforms[j].getHeigth() / 2)) {					// Il bordo superiore del hero deve essere >= del bordo inferiore della platform
-			if (hero.center.x + (hero.getWidth() / 2) > platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2) &&
-				hero.center.x + (hero.getWidth() / 2) < platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2)) {		// Il bordo destro del hero deve essere > del bordo sinistro della platform
-				hero.center.x = platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2) - (hero.getWidth() / 2);
+			if (hero.center.x + (hero.getWidth() / 2) > platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2) - epsilon &&
+				hero.center.x + (hero.getWidth() / 2) < platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2) + epsilon) {		// Il bordo destro del hero deve essere > del bordo sinistro della platform
+				hero.center.x = platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2) - (hero.getWidth() / 2) - epsilon;
 			}
-			else if (hero.center.x - (hero.getWidth() / 2) < platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2) &&
-				hero.center.x - (hero.getWidth() / 2) > platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2)) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
-				hero.center.x = platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2) + (hero.getWidth() / 2);
+			else if (hero.center.x - (hero.getWidth() / 2) > platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2) - epsilon &&
+					 hero.center.x - (hero.getWidth() / 2) < platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2) + epsilon) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
+				hero.center.x = platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2) + (hero.getWidth() / 2) + epsilon;
 			}
 		}
 		if (hero.center.x + (hero.getWidth() / 2) > platforms[j].getCenter().x + movement - (platforms[j].getWidth() / 2) &&
 			hero.center.x - (hero.getWidth() / 2) < platforms[j].getCenter().x + movement + (platforms[j].getWidth() / 2)) {
-			if (hero.center.y + (hero.getHeigth() / 2) > platforms[j].getCenter().y - (platforms[j].getHeigth() / 2) &&					// Il bordo inferiore del hero deve essere <= del bordo superiore della platform
-				hero.center.y + (hero.getHeigth() / 2) < platforms[j].getCenter().y + (platforms[j].getHeigth() / 2)) {
-				hero.center.y = platforms[j].getCenter().y - (platforms[j].getHeigth() / 2) - (hero.getHeigth() / 2);
+			if (hero.center.y + (hero.getHeigth() / 2) > platforms[j].getCenter().y - (platforms[j].getHeigth() / 2) - epsilon &&					// Il bordo inferiore del hero deve essere <= del bordo superiore della platform
+				hero.center.y + (hero.getHeigth() / 2) < platforms[j].getCenter().y - (platforms[j].getHeigth() / 2) + epsilon) {
+				hero.center.y = platforms[j].getCenter().y - (platforms[j].getHeigth() / 2) - (hero.getHeigth() / 2) - epsilon;
 			}
-			else if(hero.center.y - (hero.getHeigth() / 2) < platforms[j].getCenter().y + (platforms[j].getHeigth() / 2) &&				// Il bordo inferiore del hero deve essere <= del bordo superiore della platform
-					hero.center.y - (hero.getHeigth() / 2) > platforms[j].getCenter().y - (platforms[j].getHeigth() / 2)) {				// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
-				hero.center.y = platforms[j].getCenter().y + (platforms[j].getHeigth() / 2) + (hero.getHeigth() / 2);
+			else if(hero.center.y - (hero.getHeigth() / 2) > platforms[j].getCenter().y + (platforms[j].getHeigth() / 2) - epsilon &&				// Il bordo inferiore del hero deve essere <= del bordo superiore della platform
+					hero.center.y - (hero.getHeigth() / 2) < platforms[j].getCenter().y + (platforms[j].getHeigth() / 2) + epsilon) {				// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
+				hero.center.y = platforms[j].getCenter().y + (platforms[j].getHeigth() / 2) + (hero.getHeigth() / 2) + epsilon;
 			}
 		}
 	}

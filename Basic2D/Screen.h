@@ -4,19 +4,25 @@
 
 #include "Vertex.h"
 
-class StartScreen {
+// Id immagini di sfondo 
+const int START = 0;
+const int WIN = 1;
+const int LOSE = 2;
+const int HELP = 3;
+
+class Screen {
 private:
 	std::vector<Vertex> vectVertex;
 
-	GLuint texture;
+	GLuint texture[4];
 
 	float width = 0.08;
 	float height = 0.08;
 
 public:
-	StartScreen() {}
+	Screen() {}
 
-	StartScreen(double width, double height) {
+	Screen(double width, double height) {
 		this->width = width;
 		this->height = height;
 
@@ -29,8 +35,8 @@ public:
 		this->loadGLTexture();
 	}
 
-	~StartScreen();
+	~Screen();
 
 	bool loadGLTexture();
-	bool drawGL(void);
+	bool drawGL(int id);
 };

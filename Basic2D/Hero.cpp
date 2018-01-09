@@ -33,9 +33,9 @@ bool Hero::loadGLTexture() {
 		this->heroTexture[i + 15] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 		if (heroTexture[i + 15] == 0) return false;
 	}
-	// Hero jump textures
-	for (int i = 0; i < 2; i++) {
-		sprintf(ll, "../Data/Hero/jump_%02d.PNG", i + 1);
+	// Hero fly textures
+	for (int i = 0; i < 3; i++) {
+		sprintf(ll, "../Data/Hero/fly_%02d.PNG", i + 1);
 		this->heroTexture[i + 25] = SOIL_load_OGL_texture(ll, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 		if (heroTexture[i + 25] == 0) return false;
 	}
@@ -57,17 +57,17 @@ double Hero::moveX() {
 	else {
 		center.x += incrx;
 	}
-	if (center.x > 0.5) {
-		movement -= 0.01;
-		center.x = 0.5;
+	if (center.x > 0.3) {
+		movement -= 0.005;
+		center.x = 0.3;
 	}
 	else if (center.x < -0.8) {
-		movement += 0.01;
+		movement += 0.005;
 		center.x = -0.8;
 	}
 	recalculateVectors();
 	if (movement > 0) movement = 0;
-	//else if (movement < ) movement = ;		// TODO Inserire valore massimo di spostamento
+	else if (movement < -8) movement = -8;
 	return movement;
 }
 
@@ -141,7 +141,7 @@ bool Hero::drawGL(double Full_elapsed) {
 			else {
 				c = Coordinates(center.x + 0.2, center.y);
 			}
-			fireball.push_back(Fireball(c, z, left, id));
+			fireball.push_back(Fireball(c, z + 1, left, id));
 			id++;
 			fireballIndex++;
 			numFireball++;
@@ -152,7 +152,7 @@ bool Hero::drawGL(double Full_elapsed) {
 			}
 			break;
 		case FLY:
-			heroTexF = 25 + ((int((Full_elapsed * 2))) % 2);
+			heroTexF = 25 + ((int((Full_elapsed * 3))) % 3);
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
 			break;
 		case HURT:

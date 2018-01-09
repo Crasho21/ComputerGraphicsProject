@@ -78,6 +78,6 @@ public:
 	//bool drawBullet(Earth* earth, Tank* tank1, Tank* tank2);
 	bool loadGLTexture();
 	bool drawFireball(double Full_elapsed);
-	Vertex moveFireball();
+	void moveFireball();
 
 };
