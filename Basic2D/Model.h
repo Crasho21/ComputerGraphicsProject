@@ -122,7 +122,7 @@ public:
 	~MyModel() {
 		this->KillFont();
 	}
-	bool DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStreamPtr missionStart, audiere::OutputStreamPtr missionComplete, audiere::OutputStreamPtr heroDeathSound, audiere::OutputStreamPtr enemyDeathSound);
+	bool DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStreamPtr missionStart, audiere::OutputStreamPtr missionComplete, audiere::OutputStreamPtr flameShot, audiere::OutputStreamPtr heroDeathSound, audiere::OutputStreamPtr enemyDeathSound);
 	bool InitGL(void);
 	void ReSizeGLScene(int width, int height);
 	void glPrint(const char *fmt, ...);			// Custom GL "Print" Routine

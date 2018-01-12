@@ -110,7 +110,7 @@ void Hero::moveY() {
 	reverseVector[3].y = center.y + height / 2;*/
 }
 
-bool Hero::drawGL(double Full_elapsed) {
+bool Hero::drawGL(double Full_elapsed, audiere::OutputStreamPtr flameShot) {
 	glColor3f(1.0, 1.0, 1.0);
 
 	glEnable(GL_TEXTURE_2D);
@@ -133,23 +133,28 @@ bool Hero::drawGL(double Full_elapsed) {
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
 			break;
 		case ATTACK:
+			if (!oneFireball) {
+				if (flameShot->isPlaying()) flameShot->reset();
+				else flameShot->play();
+				if (left) {
+					c = Coordinates(center.x - 0.2, center.y);
+				}
+				else {
+					c = Coordinates(center.x + 0.2, center.y);
+				}
+				fireball.push_back(Fireball(c, z + 1, left, id));
+				id++;
+				fireballIndex++;
+				numFireball++;
+				if (fireballIndex % 10 == 0) fireballIndex = 0;
+				if (numFireball > 10) {
+					numFireball = 10;
+					fireball.erase(fireball.begin());
+				}
+				oneFireball = true;
+			}
 			heroTexF = 12 + ((int((Full_elapsed * 3))) % 3);
 			glBindTexture(GL_TEXTURE_2D, heroTexture[heroTexF]);
-			if (left) {
-				c = Coordinates(center.x - 0.2, center.y);
-			}
-			else {
-				c = Coordinates(center.x + 0.2, center.y);
-			}
-			fireball.push_back(Fireball(c, z + 1, left, id));
-			id++;
-			fireballIndex++;
-			numFireball++;
-			if (fireballIndex % 10 == 0) fireballIndex = 0;
-			if (numFireball > 10) {
-				numFireball = 10;
-				fireball.erase(fireball.begin());
-			}
 			break;
 		case FLY:
 			heroTexF = 25 + ((int((Full_elapsed * 3))) % 3);
@@ -218,7 +223,7 @@ bool Hero::drawGL(double Full_elapsed) {
 //	}
 //}
 
-double Hero::userMove(int leftKey, int rightKey, int spaceKey, int upKey, int downKey, float earthY, double Full_elapsed) {
+double Hero::userMove(bool keys[], int leftKey, int rightKey, int spaceKey, int upKey, int downKey, float earthY, double Full_elapsed) {
 	if (state == DIE) return false;
 	if (rightKey) {
 		left = false;
@@ -228,10 +233,13 @@ double Hero::userMove(int leftKey, int rightKey, int spaceKey, int upKey, int do
 		left = true;
 		movement = moveX();
 	}
-	if ((int)(Full_elapsed * 10) % 1 == 0 && spaceKey) {
+	if (/*(int)(Full_elapsed * 10) % 1 == 0 &&*/ keys[VK_SPACE] && spaceKey) {
 		state = ATTACK;
 		attacking = true;
-		Sleep(100);
+		//Sleep(100);
+	}
+	else if (!keys[VK_SPACE]) {
+		oneFireball = false;
 	}
 	if (upKey) {
 		up = true;

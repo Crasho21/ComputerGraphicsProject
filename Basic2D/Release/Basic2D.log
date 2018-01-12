@@ -1,39 +1,13 @@
-﻿  Hero.cpp
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(42): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(30): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(42): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(43): warning C4305: 'initializing': truncation from 'double' to 'float'
-Hero.cpp(14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
-Hero.cpp(20): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
-Hero.cpp(26): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
-Hero.cpp(32): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
-Hero.cpp(38): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\stdio.h(1772): note: see declaration of 'sprintf'
-Hero.cpp(62): warning C4305: '=': truncation from 'double' to 'float'
-Hero.cpp(66): warning C4305: '=': truncation from 'double' to 'float'
-Hero.cpp(83): warning C4305: '=': truncation from 'double' to 'float'
-Hero.cpp(139): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-Hero.cpp(142): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-Hero.cpp(124): warning C4101: 'newmovy': unreferenced local variable
-Hero.cpp(124): warning C4101: 'elapsed': unreferenced local variable
-Hero.cpp(124): warning C4101: 'omega': unreferenced local variable
-  Model.cpp
+﻿  Model.cpp
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(25): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(26): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(42): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(30): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(42): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(43): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(31): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(32): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(45): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(19): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(20): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
@@ -47,43 +21,32 @@ Model.cpp(43): warning C4305: 'argument': truncation from 'double' to 'float'
 Model.cpp(50): warning C4305: 'argument': truncation from 'double' to 'float'
 Model.cpp(53): warning C4305: 'argument': truncation from 'double' to 'float'
 Model.cpp(56): warning C4305: 'argument': truncation from 'double' to 'float'
-Model.cpp(60): warning C4305: 'argument': truncation from 'double' to 'float'
-Model.cpp(64): warning C4305: 'argument': truncation from 'double' to 'float'
-Model.cpp(67): warning C4305: 'argument': truncation from 'double' to 'float'
-Model.cpp(175): warning C4305: 'argument': truncation from 'double' to 'float'
-Model.cpp(401): warning C4018: '<': signed/unsigned mismatch
-Model.cpp(402): warning C4018: '<': signed/unsigned mismatch
+Model.cpp(59): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(62): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(65): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(68): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(74): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(77): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(83): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(86): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(90): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(94): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(97): warning C4305: 'argument': truncation from 'double' to 'float'
+Model.cpp(205): warning C4305: 'argument': truncation from 'double' to 'float'
 Model.cpp(431): warning C4018: '<': signed/unsigned mismatch
-Model.cpp(456): warning C4018: '<': signed/unsigned mismatch
-Model.cpp(461): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-Model.cpp(465): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-Model.cpp(472): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-Model.cpp(476): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  main.cpp
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(25): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Enemy.h(26): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Fireball.h(42): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(30): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(42): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Hero.h(43): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(19): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(20): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\cristian\downloads\university\computer graphics\basic2d_2\basic2d\Screen.h(33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-main.cpp(212): warning C4838: conversion from 'int' to 'BYTE' requires a narrowing conversion
+Model.cpp(432): warning C4018: '<': signed/unsigned mismatch
+Model.cpp(461): warning C4018: '<': signed/unsigned mismatch
+Model.cpp(486): warning C4018: '<': signed/unsigned mismatch
+Model.cpp(491): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Model.cpp(495): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Model.cpp(502): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Model.cpp(506): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 SOIL.lib(SOIL.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  3 of 396 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  5 of 396 functions ( 1.3%) were compiled, the rest were copied from previous compilation.
+    2 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'C:\Users\Cristian\Downloads\University\Computer Graphics\Basic2D_2\Release\vc100.pdb'; linking object as if no debug info
 SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'C:\Users\Cristian\Downloads\University\Computer Graphics\Basic2D_2\Release\vc100.pdb'; linking object as if no debug info

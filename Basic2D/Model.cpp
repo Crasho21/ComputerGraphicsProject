@@ -50,10 +50,40 @@ bool MyModel::InitGL(void)
 	e = Enemy(Coordinates(1.5, -0.15), -4, BAT);
 	enemy.push_back(e);
 	numEnemies++;
+	e = Enemy(Coordinates(2.0, 0.1), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
 	e = Enemy(Coordinates(2.5, -0.3), -4, WALKING_MONSTER);
 	enemy.push_back(e);
 	numEnemies++;
 	e = Enemy(Coordinates(3.5, 0.45), -4, WALKING_MONSTER);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(4.0, -0.3), -4, WALKING_MONSTER);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(4.5, 0.4), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(5.0, 0.2), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(4.5, 0.0), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(5.0, -0.2), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(5.5, -0.2), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(6.0, 0.0), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(6.5, 0.2), -4, BAT);
+	enemy.push_back(e);
+	numEnemies++;
+	e = Enemy(Coordinates(7.0, 0.4), -4, BAT);
 	enemy.push_back(e);
 	numEnemies++;
 	// Piattaforma su cui poggia il giocatore
@@ -61,10 +91,10 @@ bool MyModel::InitGL(void)
 	platforms.push_back(p);
 	numPlatforms++;
 	// Piattafrme fluttuanti
-	p = Platform(Coordinates(0.5, 0.1), 0.5, 0.1, -4, 7, 1);
+	p = Platform(Coordinates(0.5, 0.1), 0.5, 0.1, -4, 3, 1);
 	platforms.push_back(p);
 	numPlatforms++;
-	p = Platform(Coordinates(3.5, 0.3), 0.5, 0.1, -4, 7, 1);
+	p = Platform(Coordinates(3.5, 0.3), 0.5, 0.1, -4, 3, 1);
 	platforms.push_back(p);
 	numPlatforms++;
 
@@ -128,7 +158,7 @@ bool MyModel::LoadGLTextures(void)
 	return true;										// Return Success
 }
 
-bool MyModel::DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStreamPtr missionStart, audiere::OutputStreamPtr missionComplete, audiere::OutputStreamPtr heroDeathSound, audiere::OutputStreamPtr enemyDeathSound)
+bool MyModel::DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStreamPtr missionStart, audiere::OutputStreamPtr missionComplete, audiere::OutputStreamPtr flameShot, audiere::OutputStreamPtr heroDeathSound, audiere::OutputStreamPtr enemyDeathSound)
 {
 	//  TIMING - start
 	clock_t t = clock();
@@ -172,12 +202,12 @@ bool MyModel::DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStream
 				glVertex3f(Background[i].x, Background[i].y, Background[i].z);
 			}
 			glEnd();
-			movement = hero.userMove(keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], keys[VK_KEY_W], keys[VK_KEY_S], -0.4, Full_elapsed);
+			movement = hero.userMove(Data.keys, keys[VK_KEY_A], keys[VK_KEY_D], keys[VK_SPACE], keys[VK_KEY_W], keys[VK_KEY_S], -0.4, Full_elapsed);
 			if (movement == -8) {
 				missionComplete->play();
 				state = WIN_SCREEN;
 			}
-			hero.drawGL(Full_elapsed);
+			hero.drawGL(Full_elapsed, flameShot);
 			for (int i = 0; i < numEnemies; i++) {
 				enemy[i].drawGL(Full_elapsed, movement);
 			}
