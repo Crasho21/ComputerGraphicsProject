@@ -87,27 +87,6 @@ void Hero::moveY() {
 		center.y = 0.5;
 	}
 	recalculateVectors();
-	/*state = JUMP;
-	jumpStart = Full_elapsed;
-	jumping = true;
-	falling = false;*/
-	/*if (start == notrunning) {
-		start = clock();
-	}*/
-	//movy += incry;
-	/*for (int i = 0; i < 4; i++) {
-		vector[i].y += incry;
-		reverseVector[i].y += incry;
-	}
-	center.y += incry;*/
-	/*vector[0].y = center.y - height / 2;
-	vector[1].y = center.y - height / 2;
-	vector[2].y = center.y + height / 2;
-	vector[3].y = center.y + height / 2;
-	reverseVector[0].y = center.y - height / 2;
-	reverseVector[1].y = center.y - height / 2;
-	reverseVector[2].y = center.y + height / 2;
-	reverseVector[3].y = center.y + height / 2;*/
 }
 
 bool Hero::drawGL(double Full_elapsed, audiere::OutputStreamPtr flameShot) {
@@ -207,22 +186,6 @@ bool Hero::drawGL(double Full_elapsed, audiere::OutputStreamPtr flameShot) {
 	return true;
 }
 
-//void Hero::calcGravity(float earthY) {
-//	if (vector[0].y > earthY) {
-//		vector[0].y -= incrMove;
-//		vector[1].y -= incrMove;
-//		vector[2].y -= incrMove;
-//		vector[3].y -= incrMove;
-//		center.y -= incrMove;
-//	} else {
-//		vector[0].y = earthY;
-//		vector[1].y = earthY;
-//		vector[2].y =earthY + height;
-//		vector[3].y = earthY + height;
-//		center.y = earthY + height/2;
-//	}
-//}
-
 double Hero::userMove(bool keys[], int leftKey, int rightKey, int spaceKey, int upKey, int downKey, float earthY, double Full_elapsed) {
 	if (state == DIE) return false;
 	if (rightKey) {
@@ -250,46 +213,4 @@ double Hero::userMove(bool keys[], int leftKey, int rightKey, int spaceKey, int 
 		moveY();
 	}
 	return movement;
-}
-
-boolean Hero::userFireCommand(int keyFire) {
-	if (keyFire) {
-		shotFireball(powerFire, angleFire);
-		return true;
-	}
-	return false;
-}
-
-void Hero::shotFireball(int power, int angle) {
-	// Sparo della fireball a partire dalla posizione attuale dell'eroe
-	//fireball = new Fireball(power, angle, Coordinates(center.x, center.y + (height / 2)), z);
-}
-
-void Hero::calcolaDanno(Vertex center, float radius) { // TODO
-	//se tank è entro il raggio di esplosione
-	float res = squareDistance(center);
-	if (squareDistance(center) < pow(radius, 2)) {
-		//Togli una vita
-		health = 0;
-	}
-}
-
-// True se la fireball esiste, false altrimenti
-/*boolean Hero::drawBullet(Earth & earthModel, Hero* tank1, Hero* tank2) {
-	if (fireball != NULL) {
-		Vertex bulletPosition = fireball->moveBullet();
-		if (fireball->drawBullet(&earthModel, tank1, tank2)) {	//se fireball è caduto
-																//Calcola danno
-			tank1->calcolaDanno(fireball->getCenter(), fireball->getRadius());
-			if (tank2 != NULL) tank2->calcolaDanno(fireball->getCenter(), fireball->getRadius());
-
-			return false;
-		}
-		return true;
-	}
-	return false;
-}*/
-
-float Hero::squareDistance(Vertex other) {
-	return pow((this->center.x) - other.x, 2) + pow((this->center.y) - other.y, 2);
 }

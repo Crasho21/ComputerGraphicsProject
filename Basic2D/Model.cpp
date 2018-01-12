@@ -239,103 +239,6 @@ bool MyModel::DrawGLScene(audiere::OutputStreamPtr stream, audiere::OutputStream
 			screen.drawGL(HELP);
 			break;
 	}
-	/*//  Texture for the hero, change every 1/6 sec.
-	int heroTexF = ((int((Full_elapsed * 6))) % 6);
-	if (Data.keys[0x41]) {		// A key pressed
-	for (int i = 0; i < 4; i++) {
-	hero[i].x -= 0.1;
-	rhero[i].x = hero[i].x;
-	}
-	heroTexF += 6;
-	left = true;
-	}
-	if (Data.keys[0x44]) {		// D key pressed
-	for (int i = 0; i < 4; i++) hero[i].x += 0.1;
-	heroTexF += 6;
-	left = false;
-	}
-	glBindTexture(GL_TEXTURE_2D, heroTextures[heroTexF]);
-
-	//  Hero geometrical trasformations
-	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
-	glLoadIdentity();						// Reset The View
-	/*if (Data.keys[0x41]) {		// A key pressed
-	for (int i = 0; i < 4; i++) {
-	hero[i].x -= 0.001;
-	rhero[i].x -= 0.001;
-	}
-	}
-	if (Data.keys[0x44]) {		// D key pressed
-	for (int i = 0; i < 4; i++) {
-	hero[i].x += 0.001;
-	rhero[i].x += 0.001;
-	}
-	}*/
-	/*glScalef(0.05f, 0.04f, 1);    // 1- scale the hero
-
-	//  Hero
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
-
-	glBegin(GL_QUADS);
-	for (int i = 0; i < 6; i++) {
-	if (left) {
-	glTexCoord2f(rhero[i].u, rhero[i].v);
-	glVertex3f(rhero[i].x, rhero[i].y, rhero[i].z);
-	}
-	else {
-	glTexCoord2f(hero[i].u, hero[i].v);
-	glVertex3f(hero[i].x, hero[i].y, hero[i].z);
-	}
-	}
-	glEnd();
-
-	//  Texture for the bat, change every 1/19 sec.
-	/*int texF = 1 + ((int((Full_elapsed * 19))) % 8);
-	glBindTexture(GL_TEXTURE_2D, background[texF]);*/
-	/*
-	int texF = ((int((Full_elapsed * 19))) % 8);
-	glBindTexture(GL_TEXTURE_2D, enemies[texF]);
-
-	// Bat geometrical trasformations
-	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
-	glLoadIdentity();									// Reset The View
-
-	//  circular path from window center. Radious and angular velocity
-	//  in radians as follows
-	// Cambiare il raggio per aumentare lo spazio coperto dal mostro e la omega per variarne la velocità
-	double radious = 0.5;
-	double omega = PI / 4.0;  // PI/8 each second
-	double px, py;
-	px = radious * cos(omega * Full_elapsed);
-	double minx = bat[0].x - radious + 0.1;
-	double maxx = bat[0].x + radious - 0.1;
-	py = 0;
-	glTranslatef((float) px, (float) py, 0);
-	glScalef(0.05f, 0.04f, 1);    // 1- scale the bat
-
-	// Bat
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
-
-	glBegin(GL_QUADS);
-	if (bat[0].x + px >= maxx) {
-	temp = rbat;
-	}
-	else if (rbat[0].x + px <= minx) {
-	temp = bat;
-	}
-	for (int i = 0; i < 8; i++) {
-	glTexCoord2f(temp[i].u, temp[i].v);
-	glVertex3f(temp[i].x, temp[i].y, temp[i].z);
-	}
-	glEnd();
-
-	*/
 
 	glDisable(GL_BLEND);
 	glDisable(GL_ALPHA_TEST);
@@ -443,13 +346,9 @@ void MyModel::colliderFireballsEnemies(double movement, audiere::OutputStreamPtr
 						enemy[j].setDead(true);
 						enemy[j].setIsVisible(false);
 						enemyDeathSound->play();
-						
 						//TODO Sostituire con esplosione
 						//p = Platform(Coordinates(enemy[j].getCenter().x + posx + movement, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
 						//p.drawGL();
-
-						//f.erase(f.begin() + i);
-						//enemy.erase(enemy.begin() + i);
 					}
 				}
 			}
@@ -467,14 +366,8 @@ void MyModel::colliderHeroEnemies(double movement) {
 				}
 				if (hero.center.x - (hero.getWidth() / 2) <= enemy[j].getCenter().x + posx + movement + (enemy[j].getWidth() / 2) &&		// Il bordo sinistro della fireball deve essere <= del bordo destro dell'enemy
 					hero.center.x + (hero.getWidth() / 2) >= enemy[j].getCenter().x + posx + movement - (enemy[j].getWidth() / 2)) {		// Il bordo destro della fireball deve essere >= del bordo sinistro dell'enemy
-																																			//hero.setIsVisible(false);
 					hero.setState(DIE);
 					enemy[j].setDead(true);
-					//enemy[j].setIsVisible(false);
-
-					//TODO Sostituire con esplosione
-					//p = Platform(Coordinates(enemy[j].getCenter().x + posx + movement, enemy[j].getCenter().y), 0.1, 0.1, -3, 7, 2);
-					//p.drawGL();
 				}
 			}
 		}

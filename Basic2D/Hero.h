@@ -118,19 +118,11 @@ public:
 
 	double moveX();
 	void moveY();
-	void setXPosition(float xPos);
 
 	bool drawGL(double Full_elapsed, audiere::OutputStreamPtr flameShot);
 
-	void calcGravity(float);
-	float squareDistance(Vertex other);
-
 	double userMove(bool keys[], int leftKey, int rightKey, int spaceKey, int upKey, int downKey, float earthY, double Full_elapsed);
-	void userChangePowerAngle(int minusPowerKey, int plusPowerKey, int minusAngleKey, int plusAngleKey);
 
-	boolean userFireCommand(int keyFire);
-	void shotFireball(int power, int angle);
-	void calcolaDanno(Vertex, float);
 	//boolean drawBullet(Earth &earthModel, Tank* tank1, Tank* tank2);
 
 	int getHealth() { return health; }
